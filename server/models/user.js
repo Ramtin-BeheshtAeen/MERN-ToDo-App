@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
   name: {
     type: String,
   },
@@ -14,6 +11,10 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
   },
+  tasks: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Task'
+  }],
   date: { type: Date, default: Date.now },
 });
 

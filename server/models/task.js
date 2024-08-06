@@ -6,10 +6,6 @@ const taskSchema = new Schema({
     type: String,
     required: true
   },
-  id: {
-    type: Number,
-    required: true
-  },
   dueDate: {
     type: Date,
     required: true
