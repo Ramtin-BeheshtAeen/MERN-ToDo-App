@@ -1,5 +1,6 @@
 const PORT  = process.env.PORT ?? 8000
 import express from 'express'
+import cors from 'cors';
 
 import connectDB  from './Db.js'
 import populateDatabase  from './test/addRandomDataToDb.js'
@@ -7,6 +8,7 @@ import getUserTasks from './utils/getuserTasks.js'
 
 
 const app = express()
+app.use(cors())
 
 connectDB()
 

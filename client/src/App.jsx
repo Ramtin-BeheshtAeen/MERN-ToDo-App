@@ -12,7 +12,7 @@ function App() {
       const response = await fetch(`http://localhost:8000/todo/${userId}`)
       const json = await response.json()
       setTask(json)
-      
+
     } catch(err) {
       console.log(err)
     }
@@ -22,12 +22,13 @@ function App() {
 
   //Sort Tasks By Date:
   // if they exist:
-  const sortedTasks = task?.sort( (a, b) => new Date(a.date) - new Date(b.date) ) 
-
+  const sortedTasks = task?.sort( (a, b) => new Date(a.createdAt) - new Date(b.createdAt) ) 
+  console.log(sortedTasks)
+  
   return (
    <div className='app'>
     <ListHeader listName={'Holiday Tick List'}/>
-    {sortedTasks?.map( (task) => <listItem key={task.id} task={task} />)}
+    {sortedTasks?.map( (task) => <ListItem key={task._id} task={task} />)}
    </div>
   )
 }
