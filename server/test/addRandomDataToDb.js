@@ -1,12 +1,15 @@
-
 import mongoose from "mongoose";
+import { faker } from '@faker-js/faker';
 import User from'../models/user.js'
 import Task from'../models/task.js'
 
+
 async function createRandomUser() {
     const user = new User({
-        email: "test@test.com",
-        password: "1234"
+        name:faker.person.firstName(),
+        lastName:faker.person.lastName(),
+        email: faker.internet.email(),
+        password: faker.internet.password()
     });
     await user.save();
     return user;
@@ -37,9 +40,11 @@ async function populateDatabase() {
   
     const task = await createRandomTask(user._id);
     console.log('Created task for user:', task);
+
+    mongoose.connection.close();
 }
     
-    mongoose.connection.close();
+    
 
   
 export default populateDatabase
