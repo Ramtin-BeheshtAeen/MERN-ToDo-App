@@ -4,15 +4,15 @@ import ListItem from './components/ListItem'
 
 function App() {
   
-  const userEmail = "Test@test.com"
+  const userId = "66b5e7e4de8cd33172512479"
   const [task, setTask] = useState(null)
 
   async function getData(){
     try{
-      const response = await fetch(`http://localhost:8000/todo/${userEmail}`)
-      const json = await response.json(
+      const response = await fetch(`http://localhost:8000/todo/${userId}`)
+      const json = await response.json()
       setTask(json)
-      )
+      
     } catch(err) {
       console.log(err)
     }

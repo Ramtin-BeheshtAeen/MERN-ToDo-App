@@ -3,7 +3,7 @@ import express from 'express'
 
 import connectDB  from './Db.js'
 import populateDatabase  from './test/addRandomDataToDb.js'
-import getUserTasks from './utils/getUserTasks.js'
+import getUserTasks from './utils/getuserTasks.js'
 
 
 const app = express()

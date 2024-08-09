@@ -3,18 +3,22 @@ import Task from'../models/task.js'
 
 async function getUserTasks(userId){
     try{
+        console.log(`'File: getuserTasks.js \n Searching for user with ID: ${userId}`)
         //The .exec() method in Mongoose is used to execute a
         //query and return a promise. This is particularly useful
         //when you want to use async/await syntax for handling asynchronous
         //operations.
-        const userWithTasks = User.findById(userId).populate('tasks').exec()
+        const userWithTasks = await User.findById(userId).populate('tasks').exec()
         if (!userWithTasks) {
-            console.log('User Not Find')
-            return;
+            console.log('File: getuserTasks.js \n  User Not Find')
+            return null;
         }
 
+        console.log("File: getuserTasks.js \n Success")
+        return userWithTasks.tasks
+
     } catch (err) {
-        console.error('Error fetching user tasks:', error);
+        console.error('File: getuserTasks.js \n ,Error fetching user tasks:', err);
     }
 }
 
