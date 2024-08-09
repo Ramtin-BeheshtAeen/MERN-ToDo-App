@@ -1,5 +1,5 @@
 import { useState, React  } from 'react'
-
+import Model from './Model'
 
 function ListHeader(props) {
   const [count, setCount] = useState(0)
@@ -15,6 +15,7 @@ function ListHeader(props) {
           <button className='create'>ADD NEW</button>
           <button className='signout' onClick={signOut}>SIGN OUT</button>
         </div>
+        <Model/>
     </div>
   )
 }
