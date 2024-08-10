@@ -18,11 +18,11 @@ const taskSchema = new Schema({
   urgency: {
     type: String,
     enum: ['Urgent', 'Not Urgent'],
-    default: 'Medium'
+    default: 'Urgent'
   },
   status: {
     type: String,
-    enum: ['Pending', 'In Progress', 'Completed'],
+    enum: ['Pending', 'Completed'],
     default: 'Pending'
   },
   createdAt: {

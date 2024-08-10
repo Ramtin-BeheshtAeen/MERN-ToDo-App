@@ -3,25 +3,21 @@ import React, { useState } from 'react';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TextField } from '@mui/material';
-import dayjs from 'dayjs';
 
-function DateTimePicker({ selectedDate, selectedTime, onDateChange, onTimeChange }) {
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [selectedTime, setSelectedTime] = useState(dayjs());
-
+function DateTimePicker({ selectedDate, selectedTime, onDateChange, onTimeChange, dateLabel, timeLabel }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className='date-picker'>
+      <div className='date-time-picker'>
         <DatePicker
-          label="Select Date"
+          label={dateLabel}
           value={selectedDate}
           onChange={onDateChange}
           renderInput={(params) => <TextField {...params} />}
         />
         <TimePicker
-          label="Select Time"
+          label={timeLabel}
           value={selectedTime}
-          onChange={(newValue) => setSelectedTime(newValue)}
+          onChange={onTimeChange}
           renderInput={(params) => <TextField {...params} />}
         />
       </div>

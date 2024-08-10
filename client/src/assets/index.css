@@ -107,4 +107,16 @@ input {
     font-size: 13px;
 }
 
+.model .form-radio-datepicker-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.model .date-time-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+}
+
 
