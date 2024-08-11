@@ -3,7 +3,7 @@ import DateTimePicker from "./Form/DateTimePicker";
 import RadioButtonGroup from "./Form/RadioButtonGroup";
 import dayjs from "dayjs";
 
-const Model = () => {
+const Model = ({userId}) => {
   const mode = "Create";
 
   const [title, setTitle] = useState('')
@@ -45,20 +45,38 @@ const Model = () => {
     { value: "High", label: "High" },
   ];
 
-  const [data, setData] = useState({
-    _id: "",
-    title: "",
-    dueDate: selectedDate.format('YYYY-MM-DD'),
-    dueTime: selectedTime.format('HH:mm'),
-    priority: priority,
-    urgency: urgency,
-    status: "",
-    createdAt: mode === 'create' ? dayjs().format() : undefined,
-    updatedAt: " ",
-  })
+ 
+  const editMode = mode === 'edit' ? true : false
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const baseData = {
+        // _id: userId,
+        title: title,
+        dueDate: selectedDate.format('YYYY-MM-DD'),
+        dueTime: selectedTime.format('HH:mm'),
+        priority: priority,
+        urgency: urgency,
+      };
 
-  const handleChange = () => {};
+      const formData = editMode
+        ?  { ...baseData, updatedAt: dayjs().format() }
+        :  { ...baseData, status: "pending", createdAt: dayjs().format() }
+
+      
+    //   console.log('Form Data:', formData);
+      try {
+        const response = await fetch(`http://localhost:8000/post-to-do/${userId}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+        console.log(response)
+      }catch(err){
+        console.log(" \n error in Model.jsx/ line 76 \n")
+        console.log(err)
+      }
+  };
 
   return (
     <div className="overlay">
@@ -105,7 +123,7 @@ const Model = () => {
           </div>
           <br />
 
-          <input type="submit" />
+          <input type="submit" onClick={ editMode ? "" : handleSubmit}/>
         </form>
       </div>
     </div>

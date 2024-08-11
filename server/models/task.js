@@ -10,6 +10,10 @@ const taskSchema = new Schema({
     type: Date,
     required: true
   },
+  dueTime: {
+    type: String,
+    required: true
+  },
   priority: {
     type: String,
     enum: ['Low', 'High'],

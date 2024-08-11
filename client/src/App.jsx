@@ -27,7 +27,7 @@ function App() {
   
   return (
    <div className='app'>
-    <ListHeader listName={'Holiday Tick List'}/>
+    <ListHeader listName={'Holiday Tick List'} userId={userId}/>
     {sortedTasks?.map( (task) => <ListItem key={task._id} task={task} />)}
    </div>
   )

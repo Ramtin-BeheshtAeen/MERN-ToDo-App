@@ -15,7 +15,7 @@ function ListHeader(props) {
           <button className='create'>ADD NEW</button>
           <button className='signout' onClick={signOut}>SIGN OUT</button>
         </div>
-        <Model/>
+        <Model userId = {props.userId}/>
     </div>
   )
 }
