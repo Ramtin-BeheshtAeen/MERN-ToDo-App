@@ -6,6 +6,22 @@ import Model from "./Model";
 
 function ListItem({ task, userId, getData }) {
   const [showModel, setShowModel] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+        const response = await fetch(`http://localhost:8000/delete-to-do/${userId}/${task._id}`, {
+            method: 'DELETE',
+            headers: {'Content-Type':'application/json'}
+        })
+    if (response.status === 200){
+        getData()
+    }
+    }catch(err) {
+        console.log(" \n error in handleDelete \n");
+        console.log(err);
+    }
+  }
+
   return (
     <div className="list-item">
       <div className="info-container">
@@ -16,7 +32,7 @@ function ListItem({ task, userId, getData }) {
 
       <div className="button-container">
         <button className="edit" onClick={()=>(setShowModel(true))}>EDIT</button>
-        <button className="delete">DELETE</button>
+        <button className="delete" onClick={handleDelete} >DELETE</button>
       </div>
 
       {showModel && (

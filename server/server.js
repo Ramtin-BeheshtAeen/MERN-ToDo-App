@@ -1,7 +1,6 @@
 const PORT = process.env.PORT ?? 8000;
 import express from "express";
 import cors from "cors";
-import mongoose from "mongoose";
 
 import connectDB from "./Db.js";
 import populateDatabase from "./test/addRandomDataToDb.js";
@@ -118,7 +117,37 @@ app.put("/edit-to-do/:userId/:taskId", async (req, res) => {
   }
 });
 
+//delete to-do:
+app.delete("/delete-to-do/:userId/:taskId", async (req, res) => {
+  const { userId, taskId } = req.params;
 
+  try {
+    // Find the user by their ID
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    // Locate the specific task within the user's tasks
+    const taskIndex = user.tasks.indexOf(taskId);
+    if (taskIndex > -1) {
+      //user.tasks.splice(taskIndex, 1); removes the task ID at the position
+      // taskIndex from the user.tasks array. This effectively removes the
+      // reference to the task from the user’s list of tasks.
+      user.tasks.splice(taskIndex, 1);
+      await Task.findByIdAndDelete(taskId);
+      await user.save();
+      res.status(200).send({ message: "Task deleted successfully" });
+    } else {
+      res.status(404).send({ message: "Task not found" });
+    }
+
+  } catch (err) {
+    console.log("\n err in server.js delete route\n");
+    console.log(err);
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
 
 //Testing:
 app.get("/test/addRandomUserAndTasks", async (req, res) => {
@@ -130,7 +159,5 @@ app.get("/test/addRandomUserAndTasks", async (req, res) => {
     res.status(500).send("Error populating database");
   }
 });
-
-
 
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
