@@ -4,8 +4,9 @@ import ListItem from './components/ListItem'
 
 function App() {
   
-  const userId = "66b5e7e4de8cd33172512479"
+  const userId = "66b892e2bfcdfca87b50d64e"
   const [task, setTask] = useState(null)
+  
 
   async function getData(){
     try{
@@ -27,8 +28,8 @@ function App() {
   
   return (
    <div className='app'>
-    <ListHeader listName={'Holiday Tick List'} userId={userId}/>
-    {sortedTasks?.map( (task) => <ListItem key={task._id} task={task} />)}
+    <ListHeader listName={'Holiday Tick List'} userId={userId} getData={getData}/>
+    {sortedTasks?.map( (task) => <ListItem key={task._id} task={task} userId={userId} getData={getData} />)}
    </div>
   )
 }

@@ -1,10 +1,9 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import DateTimePicker from "./Form/DateTimePicker";
 import RadioButtonGroup from "./Form/RadioButtonGroup";
 import dayjs from "dayjs";
 
-const Model = ({userId}) => {
-  const mode = "Create";
+const Model = ({mode, setShowModel, getData, userId, existingData}) => {
 
   const [title, setTitle] = useState('')
 
@@ -13,6 +12,16 @@ const Model = ({userId}) => {
 
   const [urgency, setUrgency] = useState("Urgent"); 
   const [priority, setPriority] = useState("High");
+
+  useEffect(() => {
+    if (mode === 'edit' && existingData) {
+      setTitle(existingData.title);
+      setSelectedDate(dayjs(existingData.dueDate));
+      setSelectedTime(dayjs(existingData.dueTime));
+      setUrgency(existingData.urgency);
+      setPriority(existingData.priority);
+    }
+  }, [mode, existingData]);
 
   const handleTitleChange = (e) => {
     const {name, value} = e.target
@@ -61,7 +70,7 @@ const Model = ({userId}) => {
 
       const formData = editMode
         ?  { ...baseData, updatedAt: dayjs().format() }
-        :  { ...baseData, status: "pending", createdAt: dayjs().format() }
+        :  { ...baseData, status: "Pending", createdAt: dayjs().format() }
 
       
     //   console.log('Form Data:', formData);
@@ -71,19 +80,64 @@ const Model = ({userId}) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
         })
-        console.log(response)
+
+        // Use 200 OK for general success responses.
+        // Use 201 Created when a new resource has been created successfully.
+        if (response.status === 201) {
+            
+            setShowModel(false)
+            getData()
+        }
       }catch(err){
         console.log(" \n error in Model.jsx/ line 76 \n")
         console.log(err)
       }
   };
 
+  const handleEditSubmit = async (e) => {
+    e.preventDefault()
+    const baseData = {
+        // _id: userId,
+        title: title,
+        dueDate: selectedDate.format('YYYY-MM-DD'),
+        dueTime: selectedTime.format('HH:mm'),
+        priority: priority,
+        urgency: urgency,
+      };
+
+      const formData = editMode
+        ?  { ...baseData, updatedAt: dayjs().format() }
+        :  { ...baseData, status: "Pending", createdAt: dayjs().format() }
+
+      
+    //   console.log('Form Data:', formData);
+      try {
+        const response = await fetch(`http://localhost:8000/edit-to-do/${userId}/${existingData._id}`, {
+            method: "Put",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+
+        // Use 200 OK for general success responses.
+        // Use 201 Created when a new resource has been created successfully.
+        if (response.status === 200) {
+            
+            setShowModel(false)
+            getData()
+        }
+      }catch(err){
+        console.log(" \n error in Model.jsx/ line 76 \n")
+        console.log(err)
+      }
+  };
+
+
   return (
     <div className="overlay">
       <div className="model">
         <div className="form-title-container">
           <h3>Let's {mode} a Task</h3>
-          <button> X </button>
+          <button  onClick={()=>(setShowModel(false))}> X </button>
         </div>
 
         <form>
@@ -123,7 +177,7 @@ const Model = ({userId}) => {
           </div>
           <br />
 
-          <input type="submit" onClick={ editMode ? "" : handleSubmit}/>
+          <input type="submit" onClick={ editMode ? handleEditSubmit : handleSubmit}/>
         </form>
       </div>
     </div>

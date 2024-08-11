@@ -20,6 +20,7 @@ async function createRandomTask(userId) {
       title: "Clean the Rome",
       description: "Clean it Fast",
       dueDate: new Date('2024-08-07'),
+      dueTime: "12:17",
       priority: "Low",
       status: "Pending",
       user: userId

@@ -1,23 +1,32 @@
-import { useState, React  } from 'react'
-import Model from './Model'
+import { useState, React } from "react";
+import Model from "./Model";
 
 function ListHeader(props) {
-  const [count, setCount] = useState(0)
+  const [showModel, setShowModel] = useState(false);
 
-  function signOut(){
-    console.log("SignOut")
+  function signOut() {
+    console.log("SignOut");
   }
 
   return (
-    <div className='list-header'>
-        <h1>{props.listName}</h1>
-        <div className='button-container'>
-          <button className='create'>ADD NEW</button>
-          <button className='signout' onClick={signOut}>SIGN OUT</button>
-        </div>
-        <Model userId = {props.userId}/>
+    <div className="list-header">
+      <h1>{props.listName}</h1>
+      <div className="button-container">
+        <button className="create" onClick={()=>(setShowModel(true))}>ADD NEW</button>
+        <button className="signout" onClick={signOut}>
+          SIGN OUT
+        </button>
+      </div>
+      {showModel && (
+        <Model
+          mode={"create"}
+          setShowModel={setShowModel}
+          userId={props.userId}
+          getData={props.getData}
+        />
+      )}
     </div>
-  )
+  );
 }
 
-export default ListHeader
+export default ListHeader;
