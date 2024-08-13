@@ -149,6 +149,15 @@ app.delete("/delete-to-do/:userId/:taskId", async (req, res) => {
   }
 });
 
+
+//Sign Up
+
+
+
+//Login
+
+
+
 //Testing:
 app.get("/test/addRandomUserAndTasks", async (req, res) => {
   try {

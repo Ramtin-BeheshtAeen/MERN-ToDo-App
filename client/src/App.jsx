@@ -7,7 +7,7 @@ function App() {
   const userId = "66b892e2bfcdfca87b50d64e";
   const [task, setTask] = useState(null);
 
-  const authToken = true;
+  const authToken = false;
 
   async function getData() {
     try {
@@ -19,7 +19,7 @@ function App() {
     }
   }
 
-  useEffect(() => getData, []);
+  useEffect(() =>  {if (authToken) {getData}}, []);
 
   //Sort Tasks By Date:
   // if they exist:
