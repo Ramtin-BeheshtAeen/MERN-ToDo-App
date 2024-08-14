@@ -2,9 +2,13 @@ import { React, useState } from "react";
 
 const Auth = () => {
   const [isLogIn, setIsLogIn] = useState(true);
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
-  const [confirmPassword, setConfirmPassword] = useState(null)
+  const [email, setEmail] = useState(null);
+
+  const [name, setName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
   const [error, setError] = useState(null);
 
   const viewLogin = (status) => {
@@ -13,24 +17,69 @@ const Auth = () => {
   };
 
   const handleSubmit = async (e, endpoint) => {
-    email.preventDefault()
-    if (!isLogIn && password !== confirmPassword){
-        setError('Make Sure That Passwords Match!')
-        return
+    e.preventDefault();
+    if (!isLogIn && password !== confirmPassword) {
+      setError("Make Sure That Passwords Match!");
+      return;
     }
 
-    await fetch(`http://localhost:8000/${endpoint}`)
-  }
+    const response = await fetch(`http://localhost:8000/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: isLogIn
+        ? JSON.stringify({ email, password })
+        : JSON.stringify({ name, lastName, email, password }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+  };
 
   return (
     <div className="auth-container">
       <div className="auth-container-box">
-        <form>
+        <form style={{ height: !isLogIn ? "500px" : "300px" }}>
           <h2>{isLogIn ? "Please Login" : "Please Sign up"}</h2>
-          <input type="email" placeholder="email" />
-          <input type="password" placeholder="password" />
-          {!isLogIn && <input type="password" placeholder="confirm password" />}
-          <input type="submit" className="create" onClick={() => handleSubmit(e, isLogIn ? 'login' : 'signup')} />
+          {!isLogIn && (
+            <>
+              <input
+                type="name"
+                placeholder="name"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="last name"
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </>
+          )}
+
+          <input
+            type="email"
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          {!isLogIn && (
+            <input
+              type="password"
+              placeholder="confirm password"
+              autocomplete="new-password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          )}
+
+          <input
+            type="submit"
+            className="create"
+            onClick={ (e) => handleSubmit(e, isLogIn ? "login" : "signup")}
+          />
           {error && <p>{error}</p>}
         </form>
 

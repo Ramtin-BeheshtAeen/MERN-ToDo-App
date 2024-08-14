@@ -1,6 +1,8 @@
 const PORT = process.env.PORT ?? 8000;
 import express from "express";
 import cors from "cors";
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 import connectDB from "./Db.js";
 import populateDatabase from "./test/addRandomDataToDb.js";
@@ -151,7 +153,36 @@ app.delete("/delete-to-do/:userId/:taskId", async (req, res) => {
 
 
 //Sign Up
+app.post('/signup', async(req, res) => {
+  const {name, lastName, email, password} = req.body
+  console.log(name, lastName, email, password)
+  //First Hash the Password:
+  const salt = bcrypt.genSaltSync(10)
+  const hashedPassword = bcrypt.hashSync(password, salt)
 
+  try {
+    const newUser = new User({
+      name: name,
+      lastName: lastName,
+      email: email,
+      password: hashedPassword,
+     });
+
+    await newUser.save();
+
+    const token = jwt.sign({email}, 'secret', {expireIn : '1hr'})
+    res.json({email:email, token:token})
+
+    // res.status(201).send('User registered successfully');
+  
+  }catch (err) {
+    if (err){
+      // res.status(400).send('Error registering user');
+      res.json(err)
+    }
+    
+  }
+})
 
 
 //Login

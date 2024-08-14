@@ -10,11 +10,19 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    required: true,
+    unique: true,
   },
-  tasks: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Task'
-  }],
+  password: {
+    type: String,
+    required: true,
+  },
+  tasks: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Task",
+    },
+  ],
   date: { type: Date, default: Date.now },
 });
 
