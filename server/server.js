@@ -155,7 +155,7 @@ app.delete("/delete-to-do/:userId/:taskId", async (req, res) => {
 //Sign Up
 app.post('/signup', async(req, res) => {
   const {name, lastName, email, password} = req.body
-  console.log(name, lastName, email, password)
+
   //First Hash the Password:
   const salt = bcrypt.genSaltSync(10)
   const hashedPassword = bcrypt.hashSync(password, salt)
@@ -170,10 +170,8 @@ app.post('/signup', async(req, res) => {
 
     await newUser.save();
 
-    const token = jwt.sign({email}, 'secret', {expireIn : '1hr'})
-    res.json({email:email, token:token})
-
-    // res.status(201).send('User registered successfully');
+    const token = jwt.sign({email}, 'secret', {expiresIn : '1hr'})
+    res.status(201).json({email:email, token:token})
   
   }catch (err) {
     if (err){
