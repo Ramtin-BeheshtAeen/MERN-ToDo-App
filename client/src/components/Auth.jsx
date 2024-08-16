@@ -1,6 +1,10 @@
 import { React, useState } from "react";
+import {useCookies} from 'react-cookie'
 
 const Auth = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(null)
+
+
   const [isLogIn, setIsLogIn] = useState(true);
   const [email, setEmail] = useState(null);
 
@@ -33,6 +37,34 @@ const Auth = () => {
 
     const data = await response.json();
     console.log(data);
+
+    if (endpoint === 'signup') {
+      if (data.code === 11000) {
+        setError("Email already exists: " + data.keyValue.email);
+      } else if (data.email) {
+        setCookie('Email', data.email)
+        setCookie('AuthToken', data.token)
+        setCookie('UserId', data._id)
+        window.location.reload()
+      }
+       else {
+        console.log("An error occurred: ", error);
+      }
+
+    } else {
+      if (data.message) {
+        setError(data.message);
+      } else if (data.email) {
+        setCookie('Email', data.email)
+        setCookie('AuthToken', data.token)
+        setCookie('UserId', data._id)
+        window.location.reload()
+      }
+       else {
+        console.log("An error occurred: ", error);
+      }
+    }
+
   };
 
   return (
@@ -48,7 +80,7 @@ const Auth = () => {
                 onChange={(e) => setName(e.target.value)}
               />
               <input
-                type="password"
+                type="name"
                 placeholder="last name"
                 onChange={(e) => setLastName(e.target.value)}
               />

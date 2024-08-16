@@ -171,11 +171,12 @@ app.post('/signup', async(req, res) => {
     await newUser.save();
 
     const token = jwt.sign({email}, 'secret', {expiresIn : '1hr'})
-    res.status(201).json({email:email, token:token})
+    res.status(201).json({email:email, token:token, _id:newUser._id})
   
   }catch (err) {
     if (err){
       // res.status(400).send('Error registering user');
+      console.log(err)
       res.json(err)
     }
     
@@ -184,7 +185,36 @@ app.post('/signup', async(req, res) => {
 
 
 //Login
+app.post('/login', async(req, res) => {
+  const {email, password} = req.body
 
+  //First Find the User:
+  try {
+    const user = await User.findOne({email})
+    if (!user){
+      return res.status(400).json({'message': 'Invalid email or password'})
+    }
+    // compere input password with user saved one:
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if (!isMatch){
+      return res.status(400).json({'message': 'Invalid email or password'})
+    }
+
+    //create token:
+    const token = jwt.sign({email}, 'secret', {expiresIn : '1hr'})
+    res.status(201).json({email:email, token:token, _id:user._id})
+
+  }catch (err) {
+    if (err){
+      // res.status(400).send('Error registering user');
+      console.log(err)
+      res.json(err)
+
+    }
+    
+  }
+})
 
 
 //Testing:
