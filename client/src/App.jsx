@@ -2,15 +2,14 @@ import { useEffect, useState, React } from "react";
 import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
 import Auth from "./components/Auth";
-import {useCookies} from 'react-cookie'
-
+import { useCookies } from "react-cookie";
 
 function App() {
-  const [cookies, setCookie, removeCookie] = useCookies(null)
+  const [cookies, setCookie, removeCookie] = useCookies(null);
   const [task, setTask] = useState(null);
 
-  const userId = cookies.UserId
-  const authToken = cookies.AuthToken
+  const userId = cookies.UserId;
+  const authToken = cookies.AuthToken;
 
   async function getData() {
     try {
@@ -22,7 +21,11 @@ function App() {
     }
   }
 
-  useEffect(() =>  {if (authToken) {getData}}, []);
+  useEffect(() => {
+    if (authToken) {
+      getData();
+    }}
+  , [] );
 
   //Sort Tasks By Date:
   // if they exist:
