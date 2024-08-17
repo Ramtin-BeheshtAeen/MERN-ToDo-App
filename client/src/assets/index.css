@@ -1,153 +1,222 @@
 body {
-    margin: 0;
-    padding: 0;
-    background-color: rgb(233, 241, 249);
-    display: flex;
-    justify-content: center;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  margin: 0;
+  padding-left: 5%;
+  padding-right: 5%;
+  background-color: rgb(233, 241, 249);
+  display: flex;
+  justify-content: left;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+#root {
+  width: 100vw;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    #root {
+        width: 80vw;
+      }
 }
 
 .app {
-    background-color: rgb(255, 255, 255);
-    box-shadow: rgba(0, 0, 0, 0.25) 0 6px 24px, rgba(0,0,0,0.08) 0 0 0 1px ;
-    border-radius: 10px;
-    padding: 10px;
-    width: 70%;
-    margin-top: 50px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(71, 14, 242, 0.25) 0 6px 24px, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  margin-top: 50px;
 }
 
-.button-container, .info-container {
-    display: flex;
-    align-items: center;
+.button-container,
+.info-container {
+  display: flex;
+  align-items: center;
 }
 
 .button-container button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    font-size: 10px;
-    border-radius: 12px;
-    background-color: transparent;
+  margin: 0 5px;
+  padding: 5px 10px;
+  font-size: 10px;
+  border-radius: 12px;
+  background-color: transparent;
 }
 
 input {
-    margin: 11px 0;
-    padding: 12px 16px;
-    border-radius: 12px;
-    border: 1.5px solid rgb(230, 232, 236)
+  margin: 11px 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgb(230, 232, 236);
 }
 
 /* List Header */
-.list-header{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: rgba(0,0,0,0.05) 1px solid;
 
+.list-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: rgba(0, 0, 0, 0.05) 1px solid;
 }
 
 /* List Items */
 .list-item {
-    width: 100%;
-    margin: 10px 0;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.08) 0 0 0 1px;
-    display: flex;
-    justify-content: space-between;
+  width: 100%;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0 0 0 1px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.tick{
-    padding: 10px;
+.tick {
+  padding: 10px;
 }
-
 
 /* Modal */
-.overlay {
-    /* 'absolute' Wont take any thing to account */
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 50vw;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Mobile */
+@media (max-width: 768px) {
+    .model {
+        top: 200;
+        width: 70%;
+        height:70%;
+
+        padding: 10%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 6, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+      }
+    .overlay {
+        /* 'absolute' Wont take any thing to account */
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1
+      }
+    
 }
 
-.model{
-    width: 90%;
-    background-color: rgb(255, 255, 255);
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 6, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+/* Laptob */
+@media (min-width: 768px) {
+    .overlay {
+        /* 'absolute' Wont take any thing to account */
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 50vw;
+        background-color: transparent;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1
+      }
+      
+      .model {
+        width: 50%;
+        background-color: rgb(255, 255, 255);
+        padding: 60px;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 6, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+      }
+  }
 
-}
 
 .model .form-title-container {
-    display: flex;
-    justify-content: space-between;
-
+  display: flex;
+  justify-content: space-between;
 }
 
 .model .form-title-container button {
-    border: none;
-    background-color:transparent;
+  border: none;
+  background-color: transparent;
 }
 
 .model .form-title-container button:active {
-    color: rgb(255, 50, 50)
+  color: rgb(255, 50, 50);
 }
 
-.model form {
+/* Mobile */
+@media (max-width: 768px) {
+  .model label {
+    font-size: 0.5rem;
+  }
+  .model .form-radio-datepicker-container {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+  }
+}
+/* Laptob */
+@media (min-width: 768px) {
+  .model form {
+    display: flex;
+    flex-direction: column;
+  }
+  .model .form-radio-datepicker-container {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .model label {
-    font-size: 13px;
-}
-
-.model .form-radio-datepicker-container {
-    display: flex;
-    justify-content: space-between;
+  font-size: 13px;
 }
 
 .model .date-time-picker {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: space-between;
 }
 
 /* Auth */
 .auth-container {
-    display: flex;
-    justify-content: center;
-    margin: 5px;
+  display: flex;
+  justify-content: center;
+  margin: 5px;
 }
 
 .auth-container-box {
-    width: 500px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+  width: 500px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px, rgba(0, 0, 0, 0.08) 0 0 0 1px;
 }
 
 .auth-container-box form {
-    display: flex;
-    flex-direction: column;
-    height: 300px;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  padding: 20px;
 }
 
-.auth-options{
-    display: flex;
+.auth-options {
+  display: flex;
 }
 
-.auth-options button{
-    width: 50%;
-    border: none;
-    margin: 5px;
-    padding: 10px;
-    color: rgb(35, 38, 47);
+.auth-options button {
+  width: 50%;
+  border: none;
+  margin: 5px;
+  padding: 10px;
+  color: rgb(35, 38, 47);
+}
+
+/* Task Box */
+
+@media (max-width: 768px) {
+  .task-header-box {
+    width: auto;
+  }
+}
+/* Laptob */
+@media (min-width: 768px) {
 }

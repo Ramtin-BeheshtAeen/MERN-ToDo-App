@@ -35,9 +35,12 @@ function MyTabs({ tasks, userId, getData }) {
 
   return (
     <div>
+      <Box className="task-header-box">
+
       <Tabs
         value={value}
         onChange={handleChange}
+        variant="scrollable"
         aria-label="basic tabs example">
         <Tab label="Urgent & Important" />
         <Tab label="Urgent & Not Important" />
@@ -70,6 +73,7 @@ function MyTabs({ tasks, userId, getData }) {
                 getData={getData}/>
         ))}
       </TabPanel>
+      </Box>
     </div>
   );
 }
