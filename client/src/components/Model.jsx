@@ -75,7 +75,7 @@ const Model = ({mode, setShowModel, getData, userId, existingData}) => {
       
     //   console.log('Form Data:', formData);
       try {
-        const response = await fetch(`http://localhost:8000/post-to-do/${userId}`, {
+        const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/post-to-do/${userId}`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
@@ -112,7 +112,7 @@ const Model = ({mode, setShowModel, getData, userId, existingData}) => {
       
     //   console.log('Form Data:', formData);
       try {
-        const response = await fetch(`http://localhost:8000/edit-to-do/${userId}/${existingData._id}`, {
+        const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/edit-to-do/${userId}/${existingData._id}`, {
             method: "Put",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)

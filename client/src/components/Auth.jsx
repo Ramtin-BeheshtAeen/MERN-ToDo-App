@@ -26,8 +26,8 @@ const Auth = () => {
       setError("Make Sure That Passwords Match!");
       return;
     }
-
-    const response = await fetch(`http://localhost:8000/${endpoint}`, {
+    console.log(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/${endpoint}`)
+    const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: isLogIn

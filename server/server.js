@@ -1,4 +1,4 @@
-const PORT = process.env.PORT ?? 8000;
+const PORT = import.meta.env.PORT ?? 8000;
 
 import express from "express";
 import cors from "cors";

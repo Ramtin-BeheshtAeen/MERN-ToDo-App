@@ -9,7 +9,7 @@ function ListItem({ task, userId, getData }) {
 
   const handleDelete = async () => {
     try {
-        const response = await fetch(`http://localhost:8000/delete-to-do/${userId}/${task._id}`, {
+        const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/delete-to-do/${userId}/${task._id}`, {
             method: 'DELETE',
             headers: {'Content-Type':'application/json'}
         })

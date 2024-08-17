@@ -12,10 +12,10 @@ function App() {
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
   const showAll = false;
-
+  
   async function getData() {
     try {
-      const response = await fetch(`http://localhost:8000/todo/${userId}`);
+      const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/todo/${userId}`);
       const json = await response.json();
       console.log('Fetched data:', json); // Log the fetched data
       setTask(json);
