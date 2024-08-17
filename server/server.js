@@ -1,4 +1,5 @@
 const PORT = process.env.PORT ?? 8000;
+
 import express from "express";
 import cors from "cors";
 import bcrypt from 'bcrypt'
@@ -16,6 +17,10 @@ app.use(cors());
 app.use(express.json());
 
 connectDB();
+
+app.get('/test', (req, res)=>{
+  res.send("Worked")
+}) 
 
 //get all to-do of a specific user:
 app.get("/todo/:userId", async (req, res) => {
