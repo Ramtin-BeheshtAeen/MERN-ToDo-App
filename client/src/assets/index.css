@@ -18,6 +18,9 @@ body {
     #root {
         width: 80vw;
       }
+    .list-header {
+      font-size: 7px;
+    }
 }
 
 .app {

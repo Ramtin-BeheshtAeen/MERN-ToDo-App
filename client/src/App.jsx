@@ -6,11 +6,13 @@ import { useCookies } from "react-cookie";
 import MyTabs from "./components/Ui/Tabs";
 
 function App() {
+  // const [listName, setListName] = useState('') 
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [task, setTask] = useState([]); // Initialize as an empty array
 
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
+  const name = cookies.Name
   const showAll = false;
   
   async function getData() {
@@ -47,7 +49,7 @@ function App() {
         (showAll ? (
           <>
             <ListHeader
-              listName={"Holiday Tick List"}
+              listName={ name + "Tick List"}
               userId={userId}
               getData={getData}
             />
@@ -66,7 +68,7 @@ function App() {
         ) : (
           <>
             <ListHeader
-              listName={"Holiday Tick List"}
+              listName={ name + "Tick List"}
               userId={userId}
               getData={getData}
             />

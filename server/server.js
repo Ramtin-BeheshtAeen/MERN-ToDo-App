@@ -1,4 +1,4 @@
-const PORT = import.meta.env.PORT ?? 8000;
+const PORT = process.env.PORT ?? 8000;
 
 import express from "express";
 import cors from "cors";
@@ -176,7 +176,7 @@ app.post('/signup', async(req, res) => {
     await newUser.save();
 
     const token = jwt.sign({email}, 'secret', {expiresIn : '1hr'})
-    res.status(201).json({email:email, token:token, _id:newUser._id})
+    res.status(201).json({name:newUser.name, lastName:newUser.lastName, email:email, token:token, _id:newUser._id})
   
   }catch (err) {
     if (err){
@@ -208,7 +208,7 @@ app.post('/login', async(req, res) => {
 
     //create token:
     const token = jwt.sign({email}, 'secret', {expiresIn : '1hr'})
-    res.status(201).json({email:email, token:token, _id:user._id})
+    res.status(201).json({name:user.name, lastName:user.lastName, email:email, token:token, _id:user._id})
 
   }catch (err) {
     if (err){
@@ -220,6 +220,17 @@ app.post('/login', async(req, res) => {
     
   }
 })
+
+
+//setTaskDoneFunction
+app.get("/set-task-done-function", async (req, res) => {
+  try {
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error populating database");
+  }
+});
 
 
 //Testing:

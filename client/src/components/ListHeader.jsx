@@ -12,6 +12,8 @@ function ListHeader(props) {
     removeCookie("AuthToken")
     removeCookie("Email")
     removeCookie("UserId")
+    removeCookie("Name")
+    removeCookie("LastName")
     window.location.reload()
   }
 

@@ -45,6 +45,8 @@ const Auth = () => {
         setCookie('Email', data.email)
         setCookie('AuthToken', data.token)
         setCookie('UserId', data._id)
+        setCookie('Name', data.name)
+        setCookie('LastName', data.lastName)
         window.location.reload()
       }
        else {
@@ -58,6 +60,8 @@ const Auth = () => {
         setCookie('Email', data.email)
         setCookie('AuthToken', data.token)
         setCookie('UserId', data._id)
+        setCookie('Name', data.name)
+        setCookie('LastName', data.lastName)
         window.location.reload()
       }
        else {
