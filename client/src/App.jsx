@@ -5,21 +5,24 @@ import Auth from "./components/Auth";
 import { useCookies } from "react-cookie";
 import MyTabs from "./components/Ui/Tabs";
 
+
 function App() {
-  // const [listName, setListName] = useState('') 
+  // const [listName, setListName] = useState('')
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [task, setTask] = useState([]); // Initialize as an empty array
 
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
-  const name = cookies.Name
+  const name = cookies.Name;
   const showAll = false;
-  
+
   async function getData() {
     try {
-      const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/todo/${userId}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/todo/${userId}`
+      );
       const json = await response.json();
-      console.log('Fetched data:', json); // Log the fetched data
+      console.log("Fetched data:", json); // Log the fetched data
       setTask(json);
     } catch (err) {
       console.log(err);
@@ -33,7 +36,7 @@ function App() {
   }, [authToken]);
 
   useEffect(() => {
-    console.log('Tasks state updated:', task); // Log the state whenever it changes
+    console.log("Tasks state updated:", task); // Log the state whenever it changes
   }, [task]);
 
   const sortedTasks = task?.sort(
@@ -45,40 +48,44 @@ function App() {
     <div className="app">
       {!authToken && <Auth />}
 
-      {authToken &&
-        (showAll ? (
-          <>
-            <ListHeader
-              listName={ name + "Tick List"}
-              userId={userId}
-              getData={getData}
-            />
+      {authToken && (
+        <div>
 
-            <p className="user-greeting">Welcome back ... </p>
+          <ListHeader
+            listName={name + "Tick List"}
+            userId={userId}
+            getData={getData}
+          />
 
-            {sortedTasks?.map((task) => (
-              <ListItem
-                key={task._id}
-                task={task}
-                userId={userId}
-                getData={getData}
-              />
-            ))}
-          </>
-        ) : (
-          <>
-            <ListHeader
-              listName={ name + "Tick List"}
-              userId={userId}
-              getData={getData}
-            />
-            <p className="user-greeting">Welcome back ... </p>
+          <p className="user-greeting">Welcome back ... </p>
 
-            <MyTabs tasks={sortedTasks} userId={userId} getData={getData} />
+          <div className="button-container">
+            <button className="primary-button" >
+              Show All Tasks
+            </button>
+            <button className="primary-button">
+              Eisenhower Matrix
+            </button>
+          </div>
 
-            <p className="copyrights">RaSor Software Solutions</p>
-          </>
-        ))}
+          {showAll ? (
+            <div>
+              {sortedTasks?.map((task) => (
+                <ListItem
+                  key={task._id}
+                  task={task}
+                  userId={userId}
+                  getData={getData}
+                />
+              ))}
+            </div>
+          ) : (
+            <div>
+              <MyTabs tasks={sortedTasks} userId={userId} getData={getData} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -62,6 +62,14 @@ input {
   border-bottom: rgba(0, 0, 0, 0.05) 1px solid;
 }
 
+/* .app-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5%;
+} */
+
+
 /* List Items */
 .list-item {
   width: 100%;
@@ -76,7 +84,99 @@ input {
   padding: 10px;
 }
 
+.success-button {
+  background-color: #4CAF50; /* Blue background */
+  border: 2px solid #36ad3a; /* Blue border */
+  color: rgb(0, 0, 0); /* White text */
+  padding: 12px 24px; /* Increased padding for better touch targets */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the button inline */
+  font-size: 18px; /* Increase font size */
+  margin: 8px 4px; /* Some margin */
+  cursor: pointer; /* Pointer/hand icon on hover */
+  border-radius: 12px; /* Rounded corners */
+  transition-duration: 0.4s; /* 0.4 second transition effect to hover state */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.success-button:hover {
+  background-color: #4CAF50; /* Darker blue background on hover */
+  color: white; /* Keep white text on hover */
+  border: 2px solid #027206; /* Darker blue border on hover */
+}
+
+@media (max-width: 600px) {
+  .success-button {
+      width: 100%; /* Full width on small screens */
+      padding: 14px 0; /* Adjust padding for better touch targets */
+      font-size: 20px; /* Larger font size for readability */
+  }
+}
+
+
+.danger-button {
+  background-color: #FF0000; /* Bright red background */
+  border: 2px solid #CC0000; /* Darker red border */
+  color: rgb(0, 0, 0); /* White text */
+  padding: 12px 24px; /* Increased padding for better touch targets */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the button inline */
+  font-size: 18px; /* Increase font size */
+  margin: 8px 4px; /* Some margin */
+  cursor: pointer; /* Pointer/hand icon on hover */
+  border-radius: 12px; /* Rounded corners */
+  transition-duration: 0.4s; /* 0.4 second transition effect to hover state */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.danger-button:hover {
+  background-color: #CC0000; /* Darker red background on hover */
+  color: white; /* Keep white text on hover */
+  border: 2px solid #990000; /* Even darker red border on hover */
+}
+
+@media (max-width: 600px) {
+  .danger-button {
+      width: 100%; /* Full width on small screens */
+      padding: 14px 0; /* Adjust padding for better touch targets */
+      font-size: 20px; /* Larger font size for readability */
+  }
+}
+
+.primary-button {
+  background-color: #007BFF; /* Bootstrap primary blue background */
+  border: 2px solid #0056b3; /* Darker blue border */
+  color: rgb(0, 0, 0); /* White text */
+  padding: 12px 24px; /* Increased padding for better touch targets */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the button inline */
+  font-size: 18px; /* Increase font size */
+  margin: 8px 4px; /* Some margin */
+  cursor: pointer; /* Pointer/hand icon on hover */
+  border-radius: 12px; /* Rounded corners */
+  transition-duration: 0.4s; /* 0.4 second transition effect to hover state */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.primary-button:hover {
+  background-color: #0056b3; /* Darker blue background on hover */
+  color: white; /* Keep white text on hover */
+  border: 2px solid #003f7f; /* Even darker blue border on hover */
+}
+
+@media (max-width: 600px) {
+  .primary-button {
+      width: 100%; /* Full width on small screens */
+      padding: 14px 0; /* Adjust padding for better touch targets */
+      font-size: 20px; /* Larger font size for readability */
+  }
+}
+
 /* Modal */
+
 /* Mobile */
 @media (max-width: 768px) {
     .model {

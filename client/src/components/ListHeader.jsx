@@ -21,8 +21,8 @@ function ListHeader(props) {
     <div className="list-header">
       <h1>{props.listName}</h1>
       <div className="button-container">
-        <button className="create" onClick={()=>(setShowModel(true))}>ADD NEW</button>
-        <button className="signout" onClick={signOut}>
+        <button className="success-button" onClick={()=>(setShowModel(true))}>ADD NEW</button>
+        <button className="danger-button" onClick={signOut}>
           SIGN OUT
         </button>
       </div>

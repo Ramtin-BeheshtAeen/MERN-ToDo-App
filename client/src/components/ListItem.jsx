@@ -59,8 +59,8 @@ function ListItem({ task, userId, getData }) {
       </div>
 
       <div className="button-container">
-        <button className="edit" onClick={() => setShowModel(true)}>EDIT</button>
-        <button className="delete" onClick={handleDelete}>DELETE</button>
+        <button className="success-button" onClick={() => setShowModel(true)}>EDIT</button>
+        <button className="danger-button" onClick={handleDelete}>DELETE</button>
       </div>
 
       {showModel && (
