@@ -314,7 +314,6 @@ input {
 }
 
 /* Task Box */
-
 @media (max-width: 768px) {
   .task-header-box {
     width: auto;
@@ -322,4 +321,10 @@ input {
 }
 /* Laptob */
 @media (min-width: 768px) {
+}
+
+.copyrights {
+  font-size: 13;
+  margin: 10px;
+  color: rgb(114,114,144);
 }
