@@ -4,10 +4,14 @@ import ListItem from "./components/ListItem";
 import Auth from "./components/Auth";
 import { useCookies } from "react-cookie";
 import MyTabs from "./components/Ui/Tabs";
-
+import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 function App() {
-  // const [listName, setListName] = useState('')
+  const { collapseSidebar } = useProSidebar();
+  const [isNavbarOpen, setIsNavbarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [task, setTask] = useState([]); // Initialize as an empty array
   const [showAll, setShowAll] = useState(true);
@@ -15,7 +19,6 @@ function App() {
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
   const name = cookies.Name;
-
 
   async function getData() {
     try {
@@ -40,36 +43,68 @@ function App() {
     console.log("Tasks state updated:", task); // Log the state whenever it changes
   }, [task]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const sortedTasks = task?.sort(
     (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
   );
   console.log("tasks:", sortedTasks);
 
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen);
+    collapseSidebar();
+  };
+
   return (
-    <div className="app">
+    <div className={`app ${isNavbarOpen ? 'blurred' : ''}`}>
       {!authToken && <Auth />}
 
-      {authToken && (
-        <div>
+      <div className="side-bar">
+        <Sidebar style={{ height: "100vh" }}>
+          <Menu>
+            <MenuItem
+              icon={<MenuOutlinedIcon />}
+              onClick={toggleNavbar}
+              style={{ textAlign: "center" }}>
+              {" "}
+              <h4>Admin</h4>
+            </MenuItem>
 
+            <MenuItem icon={<HomeOutlinedIcon />}>Home</MenuItem>
+            <br></br>
+          </Menu>
+        </Sidebar>
+      </div>
+
+      {authToken && (!isNavbarOpen || !isMobile) && (
+        <div className="tasks-container">
           <ListHeader
             listName={name + "Tick List"}
             userId={userId}
             getData={getData}
           />
-          
-          <br/>
+
+          <br />
 
           <div className="button-container">
-            <button className="primary-button" onClick={() => setShowAll(true)} >
+            <button className="primary-button" onClick={() => setShowAll(true)}>
               Show All Tasks
             </button>
-            <button className="primary-button"  onClick={() => setShowAll(false)}>
+            <button
+              className="primary-button"
+              onClick={() => setShowAll(false)}>
               Eisenhower Matrix
             </button>
           </div>
 
-          <br/>
+          <br />
 
           {showAll ? (
             <div>
