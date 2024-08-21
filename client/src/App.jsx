@@ -10,11 +10,12 @@ function App() {
   // const [listName, setListName] = useState('')
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [task, setTask] = useState([]); // Initialize as an empty array
+  const [showAll, setShowAll] = useState(true);
 
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
   const name = cookies.Name;
-  const showAll = false;
+
 
   async function getData() {
     try {
@@ -56,17 +57,19 @@ function App() {
             userId={userId}
             getData={getData}
           />
-
-          <p className="user-greeting">Welcome back ... </p>
+          
+          <br/>
 
           <div className="button-container">
-            <button className="primary-button" >
+            <button className="primary-button" onClick={() => setShowAll(true)} >
               Show All Tasks
             </button>
-            <button className="primary-button">
+            <button className="primary-button"  onClick={() => setShowAll(false)}>
               Eisenhower Matrix
             </button>
           </div>
+
+          <br/>
 
           {showAll ? (
             <div>
