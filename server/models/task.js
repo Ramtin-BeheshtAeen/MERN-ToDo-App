@@ -41,6 +41,11 @@ const taskSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  list: {
+    type: Schema.Types.ObjectId,
+    ref: 'List',
+    required: true
   }
 });
 

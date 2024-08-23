@@ -33,6 +33,14 @@ function App() {
     }
   }
 
+  const makeNewList = async () => {
+    try {
+      
+    }catch(err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     if (authToken) {
       getData();
@@ -88,8 +96,8 @@ function App() {
                     position: "absolute",
                     bottom: "0",
                   }}>
-                  <MenuItem>+ New List</MenuItem>
-                  <MenuItem>New Group</MenuItem>
+                  <MenuItem onClick={makeNewList}>+ New List</MenuItem>
+                  <MenuItem  onClick={makeNewGroup}>New Group</MenuItem>
                 </div>
                 <br></br>
               </Menu>
