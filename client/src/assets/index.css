@@ -15,15 +15,16 @@ body {
 
 /* Mobile */
 @media (max-width: 768px) {
-    #root {
-        width: 80vw;
-      }
-    .list-header {
-      font-size: 7px;
-    }
+  #root {
+    width: 80vw;
+  }
+  .list-header {
+    font-size: 7px;
+  }
 }
 
-.auth-outer-container{
+.auth-outer-container {
+  overflow: hidden;
   justify-content: center;
   display: flex;
   background-color: rgb(255, 255, 255);
@@ -47,8 +48,13 @@ body {
 .side-bar {
   padding-right: 1%;
 }
-.tasks-container{
+.tasks-container {
+  padding: 16px; /*Adds padding inside the container for spacing.*/
   width: 100%;
+  overflow-x: hidden; /* Prevents horizontal overflow. */
+  overflow-y: auto;/* Allows vertical scrolling if the content exceeds the container’s height. */
+  max-width: 100%;  /*  Ensures the container does not exceed the width of its parent. */
+  box-sizing: border-box; /*Includes padding and border in the element’s total width and height. */
 }
 
 @media (max-width: 768px) {
@@ -89,7 +95,6 @@ input {
 }
 
 /* List Header */
-
 .list-header {
   width: 100%;
   display: flex;
@@ -103,7 +108,6 @@ input {
   justify-content: space-between;
   padding-bottom: 0.5%;
 } */
-
 
 /* List Items */
 .list-item {
@@ -119,8 +123,18 @@ input {
   padding: 10px;
 }
 
+/* Tabs */
+.mobile-tabs {
+  overflow-x: auto;
+  white-space: nowrap;
+  font-size: xx-small;
+}
+.mobile-tabs .MuiTab-root {
+  flex-shrink: 0;
+}
+
 .success-button {
-  background-color: #4CAF50; /* Blue background */
+  background-color: #4caf50; /* Blue background */
   border: 2px solid #36ad3a; /* Blue border */
   color: rgb(0, 0, 0); /* White text */
   padding: 12px 24px; /* Increased padding for better touch targets */
@@ -136,23 +150,22 @@ input {
 }
 
 .success-button:hover {
-  background-color: #4CAF50; /* Darker blue background on hover */
+  background-color: #4caf50; /* Darker blue background on hover */
   color: white; /* Keep white text on hover */
   border: 2px solid #027206; /* Darker blue border on hover */
 }
 
 @media (max-width: 600px) {
   .success-button {
-      width: 100%; /* Full width on small screens */
-      padding: 14px 0; /* Adjust padding for better touch targets */
-      font-size: 20px; /* Larger font size for readability */
+    width: 100%; /* Full width on small screens */
+    padding: 14px 0; /* Adjust padding for better touch targets */
+    font-size: 20px; /* Larger font size for readability */
   }
 }
 
-
 .danger-button {
-  background-color: #FF0000; /* Bright red background */
-  border: 2px solid #CC0000; /* Darker red border */
+  background-color: #ff0000; /* Bright red background */
+  border: 2px solid #cc0000; /* Darker red border */
   color: rgb(0, 0, 0); /* White text */
   padding: 12px 24px; /* Increased padding for better touch targets */
   text-align: center; /* Centered text */
@@ -167,21 +180,21 @@ input {
 }
 
 .danger-button:hover {
-  background-color: #CC0000; /* Darker red background on hover */
+  background-color: #cc0000; /* Darker red background on hover */
   color: white; /* Keep white text on hover */
   border: 2px solid #990000; /* Even darker red border on hover */
 }
 
 @media (max-width: 600px) {
   .danger-button {
-      width: 100%; /* Full width on small screens */
-      padding: 14px 0; /* Adjust padding for better touch targets */
-      font-size: 20px; /* Larger font size for readability */
+    width: 100%; /* Full width on small screens */
+    padding: 14px 0; /* Adjust padding for better touch targets */
+    font-size: 20px; /* Larger font size for readability */
   }
 }
 
 .primary-button {
-  background-color: #007BFF; /* Bootstrap primary blue background */
+  background-color: #007bff; /* Bootstrap primary blue background */
   border: 2px solid #0056b3; /* Darker blue border */
   color: rgb(0, 0, 0); /* White text */
   padding: 12px 24px; /* Increased padding for better touch targets */
@@ -204,9 +217,9 @@ input {
 
 @media (max-width: 600px) {
   .primary-button {
-      width: 100%; /* Full width on small screens */
-      padding: 14px 0; /* Adjust padding for better touch targets */
-      font-size: 20px; /* Larger font size for readability */
+    width: 100%; /* Full width on small screens */
+    padding: 14px 0; /* Adjust padding for better touch targets */
+    font-size: 20px; /* Larger font size for readability */
   }
 }
 
@@ -214,58 +227,55 @@ input {
 
 /* Mobile */
 @media (max-width: 768px) {
-    .model {
-        top: 200;
-        width: 70%;
-        height:70%;
-
-        padding: 10%;
-        background-color: rgb(255, 255, 255);
-        border-radius: 10px;
-        box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 6, rgba(0, 0, 0, 0.08) 0 0 0 1px;
-      }
-    .overlay {
-        /* 'absolute' Wont take any thing to account */
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1
-      }
-    
+  .model {
+    top: 200;
+    width: 70%;
+    height: 70%;
+    padding: 10%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 6, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+  }
+  .overlay {
+    /* 'absolute' Wont take any thing to account */
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
 }
 
 /* Laptob */
 @media (min-width: 768px) {
-    .overlay {
-        /* 'absolute' Wont take any thing to account */
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 50vw;
-        background-color: transparent;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1
-      }
-      
-      .model {
-        width: 50%;
-        background-color: rgb(255, 255, 255);
-        padding: 60px;
-        border-radius: 10px;
-        box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 6, rgba(0, 0, 0, 0.08) 0 0 0 1px;
-      }
+  .overlay {
+    /* 'absolute' Wont take any thing to account */
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 50vw;
+    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
   }
 
+  .model {
+    width: 50%;
+    background-color: rgb(255, 255, 255);
+    padding: 60px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 6, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+  }
+}
 
 .model .form-title-container {
   display: flex;
@@ -317,13 +327,15 @@ input {
 
 /* Auth */
 .auth-container {
+  overflow: hidden;
   display: flex;
   justify-content: center;
   margin: 5px;
 }
 
 .auth-container-box {
-  width: 500px;
+  padding: 1%;
+  width: 100vw;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px, rgba(0, 0, 0, 0.08) 0 0 0 1px;
@@ -332,7 +344,7 @@ input {
 .auth-container-box form {
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 100%;
   padding: 20px;
 }
 
@@ -361,5 +373,5 @@ input {
 .copyrights {
   font-size: 10;
   margin: 10px;
-  color: rgb(114,114,144);
+  color: rgb(114, 114, 144);
 }

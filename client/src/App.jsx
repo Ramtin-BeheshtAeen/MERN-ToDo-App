@@ -2,6 +2,8 @@ import { useEffect, useState, React } from "react";
 import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
 import Auth from "./components/Auth";
+import ListAndGroupModel from "./components/ListAndGroupModel";
+
 import { useCookies } from "react-cookie";
 import MyTabs from "./components/Ui/Tabs";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
@@ -15,6 +17,9 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [task, setTask] = useState([]); // Initialize as an empty array
   const [showAll, setShowAll] = useState(true);
+
+  const [showListModel, setShowListModel] = useState(false);
+  const [showGroupModel, setShowGroupModel] = useState(false);
 
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
@@ -33,13 +38,12 @@ function App() {
     }
   }
 
-  const makeNewList = async () => {
+  const makeNewGroup = async () => {
     try {
-      
-    }catch(err) {
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     if (authToken) {
@@ -53,6 +57,9 @@ function App() {
 
   useEffect(() => {
     const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        collapseSidebar();
+      }
       setIsMobile(window.innerWidth <= 768);
     };
 
@@ -72,9 +79,14 @@ function App() {
 
   return (
     <div>
-      {!authToken &&  <div className="auth-outer-container"><Auth /></div>}
+      {!authToken && (
+        <div className="auth-outer-container">
+          <Auth />
+        </div>
+      )}
+      {/* //(!isNavbarOpen || !isMobile) && */}
 
-      {authToken && (!isNavbarOpen || !isMobile) && (
+      {authToken && (
         <div className={`app ${isNavbarOpen ? "blurred" : ""}`}>
           <div className="side-bar">
             <Sidebar style={{ height: "90vh" }}>
@@ -96,55 +108,77 @@ function App() {
                     position: "absolute",
                     bottom: "0",
                   }}>
-                  <MenuItem onClick={makeNewList}>+ New List</MenuItem>
-                  <MenuItem  onClick={makeNewGroup}>New Group</MenuItem>
+                  <MenuItem onClick={() => setShowListModel(true)}>
+                    + New List
+                  </MenuItem>
+                  <MenuItem onClick={() => setShowGroupModel(true)}>
+                    New Group
+                  </MenuItem>
                 </div>
                 <br></br>
               </Menu>
             </Sidebar>
           </div>
+          
 
-          <div className="tasks-container">
-            <ListHeader
-              listName={name + "Tick List"}
-              userId={userId}
-              getData={getData}
-            />
+          {(!isNavbarOpen || !isMobile) && (
+            <div className="tasks-container">
+              <ListHeader
+                listName={name + "Tick List"}
+                userId={userId}
+                getData={getData}
+              />
 
-            <br />
+              <br />
 
-            <div className="button-container">
-              <button
-                className="primary-button"
-                onClick={() => setShowAll(true)}>
-                Show All Tasks
-              </button>
-              <button
-                className="primary-button"
-                onClick={() => setShowAll(false)}>
-                Eisenhower Matrix
-              </button>
-            </div>
+              <div className="button-container">
+                <button
+                  className="primary-button"
+                  onClick={() => setShowAll(true)}>
+                  Show All Tasks
+                </button>
+                <button
+                  className="primary-button"
+                  onClick={() => setShowAll(false)}>
+                  Eisenhower Matrix
+                </button>
+              </div>
 
-            <br />
+              <br />
 
-            {showAll ? (
-              <div>
-                {sortedTasks?.map((task) => (
-                  <ListItem
-                    key={task._id}
-                    task={task}
+              {showAll ? (
+                <div>
+                  {sortedTasks?.map((task) => (
+                    <ListItem
+                      key={task._id}
+                      task={task}
+                      userId={userId}
+                      getData={getData}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <MyTabs
+                    tasks={sortedTasks}
                     userId={userId}
                     getData={getData}
                   />
-                ))}
-              </div>
-            ) : (
-              <div>
-                <MyTabs tasks={sortedTasks} userId={userId} getData={getData} />
-              </div>
-            )}
-          </div>
+                </div>
+              )}
+
+              {showGroupModel && (
+                <ListAndGroupModel
+                  element={"Group"}
+                  mode={"create"}
+                  setShowModel={setShowGroupModel}
+                  userId={userId}
+                  getData={getData}
+                />
+              )}
+            </div>
+          )}
+          
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import ProgressBar from "./ProgressBar";
 import Model from "./Model";
 import EmptyTickIcon from "./EmptyTick";
 
-function ListItem({ task, userId, getData }) {
+function ListItem({ task, userId, getData, text }) {
   const [showModel, setShowModel] = useState(false);
   const [isDone, setIsDone] = useState(false);
 
@@ -43,7 +43,7 @@ function ListItem({ task, userId, getData }) {
   return (
     <div className="list-item">
       <div className="info-container">
-
+        <h4>{text}</h4>
         {isDone ? (
           <div onClick={setTaskPendingFunction}>
           <TickIcon />
