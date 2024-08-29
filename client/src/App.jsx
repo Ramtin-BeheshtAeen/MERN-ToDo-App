@@ -31,12 +31,23 @@ function App() {
         `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/todo/${userId}`
       );
       const json = await response.json();
-      console.log("Fetched data:", json); // Log the fetched data
+
       setTask(json);
     } catch (err) {
       console.log(err);
     }
   }
+
+  async function getContainerAndListData() {
+  try{
+    const response = await fetch( )
+    const json = await response.json()
+    console.log("Fetched data:", json); // Log the fetched data
+
+  } catch(err){
+    console.log("Error While Getting Container And List Data: \n" + err)
+  }
+}
 
   const makeNewGroup = async () => {
     try {
