@@ -28,7 +28,7 @@ function App() {
   async function getData() {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/todo/${userId}`
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
       );
       const json = await response.json();
 

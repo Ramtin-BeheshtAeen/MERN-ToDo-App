@@ -1,5 +1,8 @@
+import express from "express";
+const router = express.Router();
+
 //Create a New Container:
-app.post('/new-container/:userId', async (req, res) => {
+router.post('/new-container/:userId', async (req, res) => {
     const {userId} = req.params
     const {container_name, } = req.body
   
@@ -30,3 +33,6 @@ app.post('/new-container/:userId', async (req, res) => {
       return res.status(500).json({message:"error accrued while created Container"})
     }
   })
+
+
+export default router;

@@ -1,8 +1,11 @@
-import User from "./models/user.js";
-import Task from "./models/task.js";
+import User from "../models/user.js";
+import Task from "../models/task.js";
+
+import express from "express";
+const router = express.Router();
 
 //get all to-do of a specific user:
-app.get("/todo/:userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   //destruct the Param:
   const { userId } = req.params;
   try {
@@ -11,12 +14,13 @@ app.get("/todo/:userId", async (req, res) => {
   } catch (err) {
     res.status(500).json({
       error: "Error fetching user tasks",
+      error_detail: err
     });
   }
 });
 
 //add new to-do:
-app.post("/post-to-do/:userId", async (req, res) => {
+router.post("/:userId", async (req, res) => {
   const { userId } = req.params;
   const { title, dueDate, dueTime, priority, urgency, status, createdAt } =
     req.body;
@@ -55,7 +59,7 @@ app.post("/post-to-do/:userId", async (req, res) => {
 });
 
 //edit to-do:
-app.put("/to-do/:userId/:taskId", async (req, res) => {
+router.put("/:userId/:taskId", async (req, res) => {
   const { userId, taskId } = req.params;
   const { title, dueDate, dueTime, priority, urgency, status, updatedAt } =
     req.body;
@@ -104,7 +108,7 @@ app.put("/to-do/:userId/:taskId", async (req, res) => {
 });
 
 //delete to-do:
-app.delete("/to-do/:userId/:taskId", async (req, res) => {
+router.delete("/:userId/:taskId", async (req, res) => {
   const { userId, taskId } = req.params;
 
   try {
@@ -135,10 +139,12 @@ app.delete("/to-do/:userId/:taskId", async (req, res) => {
 });
 
 //setTaskDoneFunction
-app.get("/set-task-done-function", async (req, res) => {
+router.get("/set-task-done-function", async (req, res) => {
   try {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error populating database");
   }
 });
+
+export default router;

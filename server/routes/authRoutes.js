@@ -3,8 +3,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
+const router = express.Router();
+
 //Sign Up
-app.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => {
   const { name, lastName, email, password } = req.body;
 
   //First Hash the Password:
@@ -41,7 +43,7 @@ app.post("/signup", async (req, res) => {
 });
 
 //Login
-app.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   //First Find the User:
@@ -76,3 +78,5 @@ app.post("/login", async (req, res) => {
     }
   }
 });
+
+export default router;
