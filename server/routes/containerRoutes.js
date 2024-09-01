@@ -9,10 +9,7 @@ router.get('/:userId', async (req, res) => {
   console.log(userId)
   try {
     const user = await User.findById(userId).populate({
-      path: 'containers',
-      populate: {
-        path: 'lists'
-      }
+      path: 'containers'
     })
 
     if (!user) {

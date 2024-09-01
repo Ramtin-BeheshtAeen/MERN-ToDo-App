@@ -12,18 +12,30 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 function App() {
   const { collapseSidebar } = useProSidebar();
+
+  //////////////////////////////////////////////////////////////////////////////
+  ///// Use States //////
+  //////////////////////////////////////////////////////////////////////////////
   const [isNavbarOpen, setIsNavbarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [cookies, setCookie, removeCookie] = useCookies(null);
-  const [task, setTask] = useState([]); // Initialize as an empty array
+  const [task, setTask] = useState([]);
+  const [containers, setContainers] = useState([]); 
   const [showAll, setShowAll] = useState(true);
 
   const [showListModel, setShowListModel] = useState(false);
   const [showGroupModel, setShowGroupModel] = useState(false);
 
+  //////////////////////////////////////////////////////////////////////////////
+  ///// Const //////
+  //////////////////////////////////////////////////////////////////////////////
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
   const name = cookies.Name;
+
+  //////////////////////////////////////////////////////////////////////////////
+  ///// Functions //////
+  //////////////////////////////////////////////////////////////////////////////
 
   async function getData() {
     try {
@@ -31,7 +43,7 @@ function App() {
         `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
       );
       const json = await response.json();
-      console.log(json)
+      console.log(json);
 
       setTask(json);
     } catch (err) {
@@ -39,33 +51,37 @@ function App() {
     }
   }
 
-  async function getContainerAndListData() {
-  try{
-    const response = await fetch( )
-    const json = await response.json()
-    console.log("Fetched data:", json); // Log the fetched data
-
-  } catch(err){
-    console.log("Error While Getting Container And List Data: \n" + err)
+  async function getContainers() {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/containers/${userId}`);
+      const json = await response.json();
+      console.log("Fetched data:", json); // Log the fetched data
+      setContainers(json)
+    } catch (err) {
+      console.log("Error While Getting Container And List Data: \n" + err);
+    }
   }
-}
 
-  const makeNewGroup = async () => {
+  const makeNewContainer = async () => {
     try {
     } catch (err) {
       console.log(err);
     }
   };
 
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen);
+    collapseSidebar();
+  };
+
   useEffect(() => {
     if (authToken) {
       getData();
+      getContainers();
     }
   }, [authToken]);
 
-  useEffect(() => {
-    console.log("Tasks state updated:", task); // Log the state whenever it changes
-  }, [task]);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -79,15 +95,16 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
   const sortedTasks = task?.sort(
     (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
   );
-  console.log("tasks:", sortedTasks);
 
-  const toggleNavbar = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-    collapseSidebar();
-  };
+  console.log("tasks:", sortedTasks);
+  console.log("containers:", containers);
+
+
+
 
   return (
     <div>
@@ -113,6 +130,7 @@ function App() {
 
                 <MenuItem icon={<HomeOutlinedIcon />}>Home</MenuItem>
                 <hr />
+                {containers.map( (container, index) => (<MenuItem> {container.name} </MenuItem>) )}
                 <div
                   style={{
                     display: "flex",
@@ -120,6 +138,9 @@ function App() {
                     position: "absolute",
                     bottom: "0",
                   }}>
+
+                  
+
                   <MenuItem onClick={() => setShowListModel(true)}>
                     + New List
                   </MenuItem>
@@ -131,7 +152,6 @@ function App() {
               </Menu>
             </Sidebar>
           </div>
-          
 
           {(!isNavbarOpen || !isMobile) && (
             <div className="tasks-container">
@@ -190,7 +210,6 @@ function App() {
               )}
             </div>
           )}
-          
         </div>
       )}
     </div>
