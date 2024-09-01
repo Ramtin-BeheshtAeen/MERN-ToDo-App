@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   containers: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Task",
+      ref: "Container",
     },
   ],
   date: { type: Date, default: Date.now },
