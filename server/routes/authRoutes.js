@@ -2,6 +2,9 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
+import Container from "../models/container.js"
+import List from "../models/list.js"
+import Task from "../models/task.js"
 
 const router = express.Router();
 
@@ -22,6 +25,40 @@ router.post("/signup", async (req, res) => {
     });
 
     await newUser.save();
+
+     // Create the default container
+     const container = new Container({
+      name: 'Default Container',
+      user: newUser._id,
+    });
+    await container.save();
+
+    // Create the default list
+    const list = new List({
+      name: 'Default List',
+      container: container._id,
+    });
+    await list.save();
+
+    // Create the default task
+    const task = new Task({
+      title: 'Create Your First Task',
+      dueDate: new Date(),
+      dueTime: '12:00',
+      user: newUser._id,
+      list: list._id,
+    });
+    await task.save();
+
+    // Update references
+    newUser.containers.push(container._id);
+    await newUser.save();
+
+    container.lists.push(list._id);
+    await container.save();
+
+    list.tasks.push(task._id);
+    await list.save();
 
     const token = jwt.sign({ email }, "secret", { expiresIn: "1hr" });
     res
