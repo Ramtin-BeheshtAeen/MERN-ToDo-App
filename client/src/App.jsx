@@ -31,6 +31,7 @@ function App() {
         `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
       );
       const json = await response.json();
+      console.log(json)
 
       setTask(json);
     } catch (err) {

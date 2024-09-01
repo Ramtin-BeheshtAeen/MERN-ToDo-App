@@ -1,5 +1,7 @@
 import User from "../models/user.js";
 import Task from "../models/task.js";
+import Container from "../models/container.js";
+import List from "../models/list.js";
 
 import express from "express";
 const router = express.Router();
@@ -9,12 +11,33 @@ router.get("/:userId", async (req, res) => {
   //destruct the Param:
   const { userId } = req.params;
   try {
-    const tasks = await getUserTasks(userId);
+    // Find the default container for the user
+    const container = await Container.findOne({
+      user: userId,
+      name: "Default Container",
+    });
+    if (!container) {
+      throw new Error("Default container not found");
+    }
+
+    // Find the default list in the default container
+    const list = await List.findOne({
+      container: container._id,
+      name: "Default List",
+    });
+    if (!list) {
+      throw new Error("Default list not found");
+    }
+
+    // Find tasks in the default list
+    const tasks = await Task.find({ list: list._id }).populate("list").exec();
+
     res.json(tasks);
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       error: "Error fetching user tasks",
-      error_detail: err
+      error_detail: err,
     });
   }
 });
