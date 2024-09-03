@@ -9,7 +9,8 @@ import MyTabs from "./components/Ui/Tabs";
 import { Sidebar, Menu, MenuItem,SubMenu, useProSidebar } from "react-pro-sidebar";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-
+import ViewListIcon from '@mui/icons-material/ViewList';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 function App() {
   const { collapseSidebar } = useProSidebar();
 
@@ -43,9 +44,8 @@ function App() {
         `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
       );
       const json = await response.json();
-      console.log(json);
-
       setTask(json);
+
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +57,7 @@ function App() {
         `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
       );
       const json = await response.json();
-      console.log(json);
+      setTask(json);
 
       setTask(json);
     } catch (err) {
@@ -109,10 +109,8 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const sortedTasks = task?.sort(
-    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-  );
-
+  const sortedTasks = Array.isArray(task) ? task.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) : [];
+  
   console.log("tasks:", sortedTasks);
   console.log("containers:", containers);
 
@@ -142,10 +140,10 @@ function App() {
                 <hr />
 
                 {containers.map((container, index) => (
-                  <SubMenu label={container.name}>
+                  <SubMenu label={container.name} icon={<LibraryBooksIcon/>}>
                     {" "}
                     {container.lists.map((list, index) => (
-                      <MenuItem>{list.name}</MenuItem>
+                      <MenuItem icon={<ViewListIcon/>}>{list.name}</MenuItem>
                     ))}{" "}
                   </SubMenu>
                 ))}
