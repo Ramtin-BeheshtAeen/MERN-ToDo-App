@@ -6,10 +6,14 @@ const router = express.Router();
 //Getting All Containers Of User:
 router.get('/:userId', async (req, res) => {
   const {userId} = req.params
-  console.log(userId)
+
   try {
     const user = await User.findById(userId).populate({
-      path: 'containers'
+      path: 'containers',
+      populate: {
+        path: 'lists'
+      }
+
     })
 
     if (!user) {

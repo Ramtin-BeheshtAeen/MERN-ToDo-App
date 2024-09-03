@@ -6,7 +6,7 @@ import ListAndGroupModel from "./components/ListAndGroupModel";
 
 import { useCookies } from "react-cookie";
 import MyTabs from "./components/Ui/Tabs";
-import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem,SubMenu, useProSidebar } from "react-pro-sidebar";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
@@ -20,7 +20,7 @@ function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const [task, setTask] = useState([]);
-  const [containers, setContainers] = useState([]); 
+  const [containers, setContainers] = useState([]);
   const [showAll, setShowAll] = useState(true);
 
   const [showListModel, setShowListModel] = useState(false);
@@ -51,12 +51,28 @@ function App() {
     }
   }
 
+  async function getSpecificListData() {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
+      );
+      const json = await response.json();
+      console.log(json);
+
+      setTask(json);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function getContainers() {
     try {
-      const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/containers/${userId}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/containers/${userId}`
+      );
       const json = await response.json();
       console.log("Fetched data:", json); // Log the fetched data
-      setContainers(json)
+      setContainers(json);
     } catch (err) {
       console.log("Error While Getting Container And List Data: \n" + err);
     }
@@ -81,8 +97,6 @@ function App() {
     }
   }, [authToken]);
 
-
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
@@ -95,16 +109,12 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   const sortedTasks = task?.sort(
     (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
   );
 
   console.log("tasks:", sortedTasks);
   console.log("containers:", containers);
-
-
-
 
   return (
     <div>
@@ -130,7 +140,16 @@ function App() {
 
                 <MenuItem icon={<HomeOutlinedIcon />}>Home</MenuItem>
                 <hr />
-                {containers.map( (container, index) => (<MenuItem> {container.name} </MenuItem>) )}
+
+                {containers.map((container, index) => (
+                  <SubMenu label={container.name}>
+                    {" "}
+                    {container.lists.map((list, index) => (
+                      <MenuItem>{list.name}</MenuItem>
+                    ))}{" "}
+                  </SubMenu>
+                ))}
+
                 <div
                   style={{
                     display: "flex",
@@ -138,9 +157,6 @@ function App() {
                     position: "absolute",
                     bottom: "0",
                   }}>
-
-                  
-
                   <MenuItem onClick={() => setShowListModel(true)}>
                     + New List
                   </MenuItem>
