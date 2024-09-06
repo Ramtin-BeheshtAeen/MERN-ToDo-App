@@ -3,11 +3,10 @@ import DateTimePicker from "./Form/DateTimePicker";
 import RadioButtonGroup from "./Form/RadioButtonGroup";
 import dayjs from "dayjs";
 
-const Model = ({ element, mode, setShowModel, getData, userId, existingData }) => {
+const ContainerModel = ({ element, mode, setShowModel, getData, userId, existingData }) => {
   const [title, setTitle] = useState("");
 
   const editMode = mode === "edit" ? true : false;
-  const listMode = element === "list" ? true : false;
 
   const handleTitleChange = (e) => {
     const {name, value} = e.target
@@ -74,4 +73,4 @@ const Model = ({ element, mode, setShowModel, getData, userId, existingData }) =
   );
 };
 
-export default Model;
+export default ContainerModel;

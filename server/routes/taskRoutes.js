@@ -6,6 +6,10 @@ import List from "../models/list.js";
 import express from "express";
 const router = express.Router();
 
+//get all tasks of a specific list:
+
+
+
 //get all to-do of a specific user:
 router.get("/:userId", async (req, res) => {
   //destruct the Param:

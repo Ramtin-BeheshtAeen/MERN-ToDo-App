@@ -1,16 +1,28 @@
 import { useEffect, useState, React } from "react";
+import { useCookies } from "react-cookie";
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  useProSidebar,
+} from "react-pro-sidebar";
+
 import ListHeader from "./components/ListHeader";
 import ListItem from "./components/ListItem";
 import Auth from "./components/Auth";
-import ListAndGroupModel from "./components/ListAndGroupModel";
-
-import { useCookies } from "react-cookie";
+import GroupModel from "./components/ContainerModel";
+import ListModel from "./components/ListModel";
 import MyTabs from "./components/Ui/Tabs";
-import { Sidebar, Menu, MenuItem,SubMenu, useProSidebar } from "react-pro-sidebar";
+
+
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import ViewListIcon from '@mui/icons-material/ViewList';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import ViewListIcon from "@mui/icons-material/ViewList";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+
 function App() {
   const { collapseSidebar } = useProSidebar();
 
@@ -23,8 +35,14 @@ function App() {
   const [task, setTask] = useState([]);
   const [containers, setContainers] = useState([]);
   const [showAll, setShowAll] = useState(true);
+  const [currentListId, setCurrentListId] = useState("")
+  const [currentListName, setCurrentListName] = useState("")
 
-  const [showListModel, setShowListModel] = useState(false);
+
+  const [showEditListModel, setShowEditListModel] = useState(false);
+  const [showCreateListModel, setShowCreateListModel] = useState(false);
+
+
   const [showGroupModel, setShowGroupModel] = useState(false);
 
   //////////////////////////////////////////////////////////////////////////////
@@ -45,7 +63,6 @@ function App() {
       );
       const json = await response.json();
       setTask(json);
-
     } catch (err) {
       console.log(err);
     }
@@ -76,6 +93,13 @@ function App() {
     } catch (err) {
       console.log("Error While Getting Container And List Data: \n" + err);
     }
+  }
+
+  function editList(listId, listName) {
+    console.log("list name and Id:" + listId + listName)
+    setCurrentListId(listId)
+    setCurrentListName(listName)
+    setShowEditListModel(true)
   }
 
   const makeNewContainer = async () => {
@@ -109,8 +133,10 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const sortedTasks = Array.isArray(task) ? task.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)) : [];
-  
+  const sortedTasks = Array.isArray(task)
+    ? task.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+    : [];
+
   console.log("tasks:", sortedTasks);
   console.log("containers:", containers);
 
@@ -140,11 +166,20 @@ function App() {
                 <hr />
 
                 {containers.map((container, index) => (
-                  <SubMenu label={container.name} icon={<LibraryBooksIcon/>}>
-                    {" "}
+                  <SubMenu label={container.name} icon={<LibraryBooksIcon />}>
                     {container.lists.map((list, index) => (
-                      <MenuItem icon={<ViewListIcon/>}>{list.name}</MenuItem>
-                    ))}{" "}
+                      <MenuItem icon={<ViewListIcon />}>
+
+                        <div>
+                          {list.name}
+                          <EditIcon
+                            fontSize="lg"
+                            onClick={() => editList(list._id, list.name)}
+                          />
+                          <DeleteOutlineIcon fontSize="lg" />
+                        </div>
+                      </MenuItem>
+                    ))}
                   </SubMenu>
                 ))}
 
@@ -155,7 +190,7 @@ function App() {
                     position: "absolute",
                     bottom: "0",
                   }}>
-                  <MenuItem onClick={() => setShowListModel(true)}>
+                  <MenuItem onClick={() => setShowCreateListModel(true)}>
                     + New List
                   </MenuItem>
                   <MenuItem onClick={() => setShowGroupModel(true)}>
@@ -214,12 +249,25 @@ function App() {
               )}
 
               {showGroupModel && (
-                <ListAndGroupModel
+                <GroupModel
                   element={"Group"}
                   mode={"create"}
                   setShowModel={setShowGroupModel}
                   userId={userId}
                   getData={getData}
+                />
+              )}
+
+              {showEditListModel && (
+                <ListModel
+                  containers={containers}
+                  listId={currentListId}
+                  element={"List"}
+                  mode={"Edit"}
+                  setShowModel={setShowEditListModel}
+                  userId={userId}
+                  getData={getData}
+                  listName={currentListName}
                 />
               )}
             </div>
