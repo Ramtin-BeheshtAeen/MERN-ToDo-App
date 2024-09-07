@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import BasicSelect from "./Ui/MultiSelect";
 
 const ListModel = ({
   containers,
@@ -9,21 +10,35 @@ const ListModel = ({
   getData,
   userId,
   listName,
+  currentListContainerId
 }) => {
   const editMode = mode === "edit" ? true : false;
+
   const [listNewName, setListNewName] = useState(listName);
+  const [selectedContainer, setSelectedContainer] = useState(null);
 
   const handleListNameChange = (e) => {
     const { name, value } = e.target;
     setListNewName(value);
   };
 
-  const handleEditSubmit = () => {
+  const handleContainerSelect = (item) => {
+    setSelectedContainer(item)
+  }
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    console.log("Edit Submitted");
+    console.log(selectedContainer)
+    
+
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log("Submitted");
   };
-  const handleSubmit = () => {
-    console.log("Submitted");
-  };
+
+  
   return (
     <div className="overlay">
       <div className="model">
@@ -33,6 +48,7 @@ const ListModel = ({
         </div>
 
         <form>
+          <BasicSelect label={'container'} currentState={currentListContainerId} data={containers}  onSelect={handleContainerSelect}/>
           <input
             required
             maxLength={100}

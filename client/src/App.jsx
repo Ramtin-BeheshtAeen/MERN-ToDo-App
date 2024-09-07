@@ -35,8 +35,10 @@ function App() {
   const [task, setTask] = useState([]);
   const [containers, setContainers] = useState([]);
   const [showAll, setShowAll] = useState(true);
+
   const [currentListId, setCurrentListId] = useState("")
   const [currentListName, setCurrentListName] = useState("")
+  const [currentListContainerId, setCurrentListContainerId] = useState("")
 
 
   const [showEditListModel, setShowEditListModel] = useState(false);
@@ -95,10 +97,11 @@ function App() {
     }
   }
 
-  function editList(listId, listName) {
+  function editList(listId, listName, listContainerId) {
     console.log("list name and Id:" + listId + listName)
     setCurrentListId(listId)
     setCurrentListName(listName)
+    setCurrentListContainerId(listContainerId)
     setShowEditListModel(true)
   }
 
@@ -174,7 +177,7 @@ function App() {
                           {list.name}
                           <EditIcon
                             fontSize="lg"
-                            onClick={() => editList(list._id, list.name)}
+                            onClick={() => editList(list._id, list.name, container._id)}
                           />
                           <DeleteOutlineIcon fontSize="lg" />
                         </div>
@@ -263,11 +266,12 @@ function App() {
                   containers={containers}
                   listId={currentListId}
                   element={"List"}
-                  mode={"Edit"}
+                  mode={"edit"}
                   setShowModel={setShowEditListModel}
                   userId={userId}
                   getData={getData}
                   listName={currentListName}
+                  currentListContainerId={currentListContainerId}
                 />
               )}
             </div>
