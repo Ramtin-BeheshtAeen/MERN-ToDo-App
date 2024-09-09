@@ -11,7 +11,7 @@ const router = express.Router();
 // - [ 3 ] Create New List Instance
 // - [ 3-2 ] Save the new Instance
 // - [ 3-3 ] Push the new list in to the container
-router.post("/list/:userId", async (req, res) => {
+router.post("/:userId", async (req, res) => {
   const {userId} = req.params
   const {name, containerId} = req.body
 
@@ -58,9 +58,10 @@ router.post("/list/:userId", async (req, res) => {
 // - [ 4-3 ] Add the list to the new container
 // - [ 4-4 ] Update the list's container reference
 //-  [ 5 ] Save Updated List
-router.put("/list/:userId/:listId", async (req, res) => {
+router.put("/:userId/:listId", async (req, res) => {
   const { userId, listId } = req.params;
   const { name, containerId } = req.body;
+  console.log(name + "\n" + containerId)
   try {
     //[1]Find The List By Id:
     const list = await List.findById(listId).populate("container");
@@ -105,7 +106,7 @@ router.put("/list/:userId/:listId", async (req, res) => {
     await list.save();
     res.status(200).json({ message: "List updated successfully", list });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    res.status(500).json({ message: "Server error", error: error.message  });
   }
 });
 

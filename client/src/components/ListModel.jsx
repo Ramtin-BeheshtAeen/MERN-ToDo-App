@@ -28,17 +28,18 @@ const ListModel = ({
   };
 
   const handleEditSubmit = async (e) => {
+    console.log(selectedContainer)
     e.preventDefault();
 
     const editData = {
       // _id: userId,
       name: listNewName,
-      containerId: selectedContainer,
+      containerId: selectedContainer.id,
     };
 
     const formData = editMode
     ?  { ...editData, updatedAt: dayjs().format() }
-    :  { ...editData}
+    :  { ...editData,}
 
     try {
       const response = await fetch(
@@ -56,7 +57,6 @@ const ListModel = ({
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 200) {
         setShowModel(false);
-        getData();
       }
       else {
         console.log(response)
