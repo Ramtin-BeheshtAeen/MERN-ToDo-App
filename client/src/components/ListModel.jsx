@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import BasicSelect from "./Ui/MultiSelect";
+import dayjs from "dayjs";
 
 const ListModel = ({
   containers,
@@ -10,7 +11,7 @@ const ListModel = ({
   getData,
   userId,
   listName,
-  currentListContainerId
+  currentListContainerId,
 }) => {
   const editMode = mode === "edit" ? true : false;
 
@@ -23,32 +24,72 @@ const ListModel = ({
   };
 
   const handleContainerSelect = (item) => {
-    setSelectedContainer(item)
-  }
-
-  const handleEditSubmit = (e) => {
-    e.preventDefault();
-    console.log("Edit Submitted");
-    console.log(selectedContainer)
-    
-
+    setSelectedContainer(item);
   };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    const editData = {
+      // _id: userId,
+      name: listNewName,
+      containerId: selectedContainer,
+    };
+
+    const formData = editMode
+    ?  { ...editData, updatedAt: dayjs().format() }
+    :  { ...editData}
+
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_APP_BACKEND_SERVER_URL
+        }/list/${userId}/${listId}`,
+        {
+          method: "Put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      // Use 200 OK for general success responses.
+      // Use 201 Created when a new resource has been created successfully.
+      if (response.status === 200) {
+        setShowModel(false);
+        getData();
+      }
+      else {
+        console.log(response)
+      }
+    } catch (err) {
+      console.log(" \n error  \n");
+      console.log(err);
+    }
+  };
+  
   const handleSubmit = (e) => {
+    // /list/:userId
     e.preventDefault();
     console.log("Submitted");
   };
 
-  
   return (
     <div className="overlay">
       <div className="model">
         <div className="form-title-container">
-          <h3>Let's {mode} {listName} </h3>
+          <h3>
+            Let's {mode} {listName}{" "}
+          </h3>
           <button onClick={() => setShowModel(false)}> X </button>
         </div>
 
         <form>
-          <BasicSelect label={'container'} currentState={currentListContainerId} data={containers}  onSelect={handleContainerSelect}/>
+          <BasicSelect
+            label={"container"}
+            currentState={currentListContainerId}
+            data={containers}
+            onSelect={handleContainerSelect}
+          />
           <input
             required
             maxLength={100}

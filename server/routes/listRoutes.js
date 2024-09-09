@@ -6,19 +6,43 @@ import Container from "../models/container.js";
 const router = express.Router();
 
 // Create New List:
-// - [ 1 ] Check if user is the owner of the container
-// - [ 2 ] Create New List Instance
-// - [2-1]  Find the Container, that the list will be attached to
-// - [ 3 ] Push it in to the container
+// - [ 1 ] Find the Container, that the list will be attached to
+// - [ 2 ] Check if user is the owner of the container
+// - [ 3 ] Create New List Instance
+// - [ 3-2 ] Save the new Instance
+// - [ 3-3 ] Push the new list in to the container
 router.post("/list/:userId", async (req, res) => {
   const {userId} = req.params
   const {name, containerId} = req.body
-    try {
-      const newList = new List({
-        name:
-        container: 
-      })
+
+  try {
+    // - [ 1 ] Find the Container, that the list will be attached to:
+    const container = await Container.findById(containerId)
+    if (!container) {
+      return res.status(404).json({ message: "Container not found" });
     }
+
+    // - [ 2 ] Check if user is the owner of the container
+    if (container.user.toString() !== userId.toString()) {
+      return res.status(403).json({ message: "You are not authorized to update this list" });
+    }
+
+    const newList = new List({
+      name:name,
+      container: containerId 
+    })
+
+    // - [ 3-1 ] Save the new Instance
+    await newList.save()
+
+    // - [ 3-2 ] Push the new list in to the container
+    container.lists.push(newList._id)
+    await container.save()
+  
+    res.status(201).json({ message: 'List created successfully', list: newList });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
 
 })
 
