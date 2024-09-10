@@ -28,7 +28,7 @@ const ListModel = ({
   };
 
   const handleEditSubmit = async (e) => {
-    console.log(selectedContainer)
+    console.log(selectedContainer);
     e.preventDefault();
 
     const editData = {
@@ -38,8 +38,8 @@ const ListModel = ({
     };
 
     const formData = editMode
-    ?  { ...editData, updatedAt: dayjs().format() }
-    :  { ...editData,}
+      ? { ...editData, updatedAt: dayjs().format() }
+      : { ...editData };
 
     try {
       const response = await fetch(
@@ -57,16 +57,15 @@ const ListModel = ({
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 200) {
         setShowModel(false);
-      }
-      else {
-        console.log(response)
+      } else {
+        console.log(response);
       }
     } catch (err) {
       console.log(" \n error  \n");
       console.log(err);
     }
   };
-  
+
   const handleSubmit = (e) => {
     // /list/:userId
     e.preventDefault();
@@ -80,7 +79,11 @@ const ListModel = ({
           <h3>
             Let's {mode} {listName}{" "}
           </h3>
-          <button onClick={() => setShowModel(false)}> X </button>
+          {editMode ? (
+            <button onClick={() => setShowEditListModel(false)}> X </button>
+          ) : (
+            <button onClick={() => setShowCreateListModel(false)}> X </button>
+          )}
         </div>
 
         <form>

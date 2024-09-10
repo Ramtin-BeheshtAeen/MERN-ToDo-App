@@ -15,7 +15,6 @@ import GroupModel from "./components/ContainerModel";
 import ListModel from "./components/ListModel";
 import MyTabs from "./components/Ui/Tabs";
 
-
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -36,14 +35,12 @@ function App() {
   const [containers, setContainers] = useState([]);
   const [showAll, setShowAll] = useState(true);
 
-  const [currentListId, setCurrentListId] = useState("")
-  const [currentListName, setCurrentListName] = useState("")
-  const [currentListContainerId, setCurrentListContainerId] = useState("")
-
+  const [currentListId, setCurrentListId] = useState("");
+  const [currentListName, setCurrentListName] = useState("");
+  const [currentListContainerId, setCurrentListContainerId] = useState("");
 
   const [showEditListModel, setShowEditListModel] = useState(false);
   const [showCreateListModel, setShowCreateListModel] = useState(false);
-
 
   const [showGroupModel, setShowGroupModel] = useState(false);
 
@@ -98,11 +95,11 @@ function App() {
   }
 
   function editList(listId, listName, listContainerId) {
-    console.log("list name and Id:" + listId + listName)
-    setCurrentListId(listId)
-    setCurrentListName(listName)
-    setCurrentListContainerId(listContainerId)
-    setShowEditListModel(true)
+    console.log("list name and Id:" + listId + listName);
+    setCurrentListId(listId);
+    setCurrentListName(listName);
+    setCurrentListContainerId(listContainerId);
+    setShowEditListModel(true);
   }
 
   const makeNewContainer = async () => {
@@ -172,12 +169,13 @@ function App() {
                   <SubMenu label={container.name} icon={<LibraryBooksIcon />}>
                     {container.lists.map((list, index) => (
                       <MenuItem icon={<ViewListIcon />}>
-
                         <div>
                           {list.name}
                           <EditIcon
                             fontSize="lg"
-                            onClick={() => editList(list._id, list.name, container._id)}
+                            onClick={() =>
+                              editList(list._id, list.name, container._id)
+                            }
                           />
                           <DeleteOutlineIcon fontSize="lg" />
                         </div>
@@ -268,6 +266,20 @@ function App() {
                   element={"List"}
                   mode={"edit"}
                   setShowModel={setShowEditListModel}
+                  userId={userId}
+                  getData={getData}
+                  listName={currentListName}
+                  currentListContainerId={currentListContainerId}
+                />
+              )}
+
+              {showCreateListModel && (
+                <ListModel
+                  containers={containers}
+                  listId={currentListId}
+                  element={"List"}
+                  mode={"create"}
+                  setShowModel={setShowCreateListModel}
                   userId={userId}
                   getData={getData}
                   listName={currentListName}

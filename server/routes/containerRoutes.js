@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/user.js";
+import Container from "../models/container.js";
 
 const router = express.Router();
 
@@ -30,7 +31,7 @@ router.get('/:userId', async (req, res) => {
 //Create a New Container:
 router.post('/new-container/:userId', async (req, res) => {
     const {userId} = req.params
-    const {container_name, } = req.body
+    const {containerName} = req.body
   
     try {
       //Find User
@@ -41,21 +42,22 @@ router.post('/new-container/:userId', async (req, res) => {
   
       //Make Container
       const container = new Container({
-        name:container_name,
+        name:containerName,
         user:userId
   
       })
   
       //Save Container:
-      await Container.save()
+      await container.save()
   
       //Add Container To User's Containers:
-      user.container.push(container._id)
+      user.containers.push(container._id)
       await user.save()
   
       return res.status(201).json({message:"container created successfully"})
   
     }catch(err){
+      console.log(err)
       return res.status(500).json({message:"error accrued while created Container"})
     }
   })

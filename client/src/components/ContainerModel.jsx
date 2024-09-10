@@ -16,16 +16,16 @@ const ContainerModel = ({ element, mode, setShowModel, getData, userId, existing
   const handleSubmit = async (e) => {
     e.preventDefault();
     const baseData = {
-      // _id: userId,
+      containerName:title
     };
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}//${userId}`,
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/containers/new-container/${userId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(baseData),
         }
       );
 
@@ -36,7 +36,7 @@ const ContainerModel = ({ element, mode, setShowModel, getData, userId, existing
         getData();
       }
     } catch (err) {
-      console.log(" \n error in Model.jsx/ line 76 \n");
+      console.log("error in Model \n");
       console.log(err);
     }
   };
