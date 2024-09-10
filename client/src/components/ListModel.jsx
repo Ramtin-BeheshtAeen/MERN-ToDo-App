@@ -77,13 +77,10 @@ const ListModel = ({
       <div className="model">
         <div className="form-title-container">
           <h3>
-            Let's {mode} {listName}{" "}
+            Let's {mode} {listName}
           </h3>
-          {editMode ? (
-            <button onClick={() => setShowEditListModel(false)}> X </button>
-          ) : (
-            <button onClick={() => setShowCreateListModel(false)}> X </button>
-          )}
+            <button onClick={() => setShowModel(false)}> X </button>
+            
         </div>
 
         <form>
