@@ -66,6 +66,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: fixed;
   }
 
   .task-container {
@@ -247,7 +248,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 3;
   }
 }
 
@@ -265,7 +266,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 3;
   }
 
   .model {
@@ -378,6 +379,11 @@ input {
 
 
 .options {
+  border: 1px solid #ccc;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   width: 100px;
@@ -385,8 +391,7 @@ input {
 .option {
   padding: 10px;
   margin: 5px 0;
-  text-align: center;
-  border: 1px solid #ccc;
+  text-align: left;
   cursor: pointer;
 }
 .option:hover {

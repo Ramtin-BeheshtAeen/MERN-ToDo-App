@@ -1,5 +1,8 @@
 import { useEffect, useState, React } from "react";
+import { createPortal } from "react-dom";
 import { useCookies } from "react-cookie";
+import { usePopper } from 'react-popper';
+
 import {
   Sidebar,
   Menu,
@@ -21,10 +24,14 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function App() {
   const { collapseSidebar } = useProSidebar();
-
+  const [referenceElement, setReferenceElement] = useState();
+  const [popperElement, setPopperElement] = useState();
+  
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {placement:"bottom"})
   //////////////////////////////////////////////////////////////////////////////
   ///// Use States //////
   //////////////////////////////////////////////////////////////////////////////
@@ -102,6 +109,12 @@ function App() {
     setShowEditListModel(true);
   }
 
+  const [showPopup, setShowPopup] = useState(false);
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
+
   const makeNewContainer = async () => {
     try {
     } catch (err) {
@@ -169,21 +182,33 @@ function App() {
                   <SubMenu label={container.name} icon={<LibraryBooksIcon />}>
                     {container.lists.map((list, index) => (
                       <MenuItem icon={<ViewListIcon />}>
-                        <div onClick={() => getListData(list._id)}>
+                        <div onClick={() => getListData(list._id)} ref={setReferenceElement}>
                           {list.name}
-                          <div class="options">
-                            <div class="option">
-                              <EditIcon
-                                fontSize="lg"
-                                onClick={() =>
-                                  editList(list._id, list.name, container._id)
-                                }
-                              />
-                            </div>
-                            <div class="option">
-                              <DeleteOutlineIcon fontSize="lg" />
-                            </div>
-                          </div>
+
+                          <MoreVertIcon onClick={togglePopup}/>
+                          {showPopup &&
+                            createPortal(
+                              <div class="options" ref={setPopperElement} style={styles.popper} {...attributes.popper}>
+                              
+                                <div class="option">
+                                  <EditIcon
+                                    fontSize="lg"
+                                    onClick={() =>
+                                      editList(
+                                        list._id,
+                                        list.name,
+                                        container._id
+                                      )
+                                    }
+                                  /> Edit 
+                                </div>
+
+                                <div class="option">
+                                  <DeleteOutlineIcon fontSize="lg" />
+                                  Delete
+                                </div>
+                              </div>, document.body
+                            )}
                         </div>
                       </MenuItem>
                     ))}
