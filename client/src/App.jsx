@@ -1,7 +1,7 @@
 import { useEffect, useState, React } from "react";
 import { createPortal } from "react-dom";
 import { useCookies } from "react-cookie";
-import { usePopper } from 'react-popper';
+import { usePopper } from "react-popper";
 
 import {
   Sidebar,
@@ -24,14 +24,16 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 function App() {
   const { collapseSidebar } = useProSidebar();
   const [referenceElement, setReferenceElement] = useState();
   const [popperElement, setPopperElement] = useState();
-  
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {placement:"bottom"})
+
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: "bottom",
+  });
   //////////////////////////////////////////////////////////////////////////////
   ///// Use States //////
   //////////////////////////////////////////////////////////////////////////////
@@ -179,17 +181,37 @@ function App() {
                 <hr />
 
                 {containers.map((container, index) => (
-                  <SubMenu label={container.name} icon={<LibraryBooksIcon />}>
+                  <SubMenu
+                    label={
+                      <div className="side-nav-container-section">
+                        {container.name}
+                        <MoreVertIcon
+                          onClick={() =>
+                            editContainer(container._id, container.name)
+                          }
+                          style={{ marginLeft: "auto", cursor: "pointer" }}
+                        />
+                      </div>
+                    }
+                    icon={<LibraryBooksIcon />}>
+
+
                     {container.lists.map((list, index) => (
                       <MenuItem icon={<ViewListIcon />}>
-                        <div onClick={() => getListData(list._id)} ref={setReferenceElement}>
+                        <div
+                          className="side-nav-list-section"
+                          onClick={() => getListData(list._id)}
+                          ref={setReferenceElement}>
                           {list.name}
 
-                          <MoreVertIcon onClick={togglePopup}/>
+                          <MoreVertIcon onClick={togglePopup} />
                           {showPopup &&
                             createPortal(
-                              <div class="options" ref={setPopperElement} style={styles.popper} {...attributes.popper}>
-                              
+                              <div
+                                class="options"
+                                ref={setPopperElement}
+                                style={styles.popper}
+                                {...attributes.popper}>
                                 <div class="option">
                                   <EditIcon
                                     fontSize="lg"
@@ -200,14 +222,16 @@ function App() {
                                         container._id
                                       )
                                     }
-                                  /> Edit 
+                                  />{" "}
+                                  Edit
                                 </div>
 
                                 <div class="option">
                                   <DeleteOutlineIcon fontSize="lg" />
                                   Delete
                                 </div>
-                              </div>, document.body
+                              </div>,
+                              document.body
                             )}
                         </div>
                       </MenuItem>

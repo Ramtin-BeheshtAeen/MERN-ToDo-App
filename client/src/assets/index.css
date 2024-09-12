@@ -377,6 +377,17 @@ input {
   color: rgb(114, 114, 144);
 }
 
+.side-nav-list-section{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.side-nav-container-section{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
 .options {
   border: 1px solid #ccc;
