@@ -13,11 +13,13 @@ export default function BasicSelect({label, currentState, data, onSelect}) {
       setSelectedItem(data[0]._id);
       onSelect({ id: data[0]._id });
     }
+
   }, [data, onSelect]);
 
   const handleChange = (event) => {
-    setSelectedItem(event.target.value);
-    onSelect({ id: selectedItem});
+    const newValue = event.target.value
+    setSelectedItem(newValue);
+    onSelect({ id: newValue});
   };
 
   return (

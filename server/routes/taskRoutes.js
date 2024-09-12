@@ -11,9 +11,9 @@ const router = express.Router();
 
 
 //get all to-do of a specific user:
-router.get("/:userId", async (req, res) => {
+router.get("/:userId/:listId", async (req, res) => {
   //destruct the Param:
-  const { userId } = req.params;
+  const { userId, listId } = req.params;
   try {
     // Find the default container for the user
     const container = await Container.findOne({

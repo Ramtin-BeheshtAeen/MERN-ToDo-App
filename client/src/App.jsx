@@ -67,10 +67,11 @@ function App() {
     }
   }
 
-  async function getSpecificListData() {
+  async function getSpecificListData({ listId }) {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}` /
+          `${listId}`
       );
       const json = await response.json();
       setTask(json);
@@ -95,7 +96,6 @@ function App() {
   }
 
   function editList(listId, listName, listContainerId) {
-    console.log("list name and Id:" + listId + listName);
     setCurrentListId(listId);
     setCurrentListName(listName);
     setCurrentListContainerId(listContainerId);
@@ -169,15 +169,21 @@ function App() {
                   <SubMenu label={container.name} icon={<LibraryBooksIcon />}>
                     {container.lists.map((list, index) => (
                       <MenuItem icon={<ViewListIcon />}>
-                        <div>
+                        <div onClick={() => getListData(list._id)}>
                           {list.name}
-                          <EditIcon
-                            fontSize="lg"
-                            onClick={() =>
-                              editList(list._id, list.name, container._id)
-                            }
-                          />
-                          <DeleteOutlineIcon fontSize="lg" />
+                          <div class="options">
+                            <div class="option">
+                              <EditIcon
+                                fontSize="lg"
+                                onClick={() =>
+                                  editList(list._id, list.name, container._id)
+                                }
+                              />
+                            </div>
+                            <div class="option">
+                              <DeleteOutlineIcon fontSize="lg" />
+                            </div>
+                          </div>
                         </div>
                       </MenuItem>
                     ))}

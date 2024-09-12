@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export default function connectDB() {
   //Ethernet adapter vEthernet (WSL): 172.23.192.1
-  const url = "mongodb://172.22.240.1:27017/to_do_app";
+  const url = "mongodb://172.23.16.1:27017/to_do_app";
   
   try {
     mongoose.connect(url, {

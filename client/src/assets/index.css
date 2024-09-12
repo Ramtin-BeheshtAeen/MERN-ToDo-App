@@ -375,3 +375,20 @@ input {
   margin: 10px;
   color: rgb(114, 114, 144);
 }
+
+
+.options {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+}
+.option {
+  padding: 10px;
+  margin: 5px 0;
+  text-align: center;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.option:hover {
+  background-color: #f0f0f0;
+}
