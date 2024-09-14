@@ -1,6 +1,7 @@
 import { useEffect, useState, React } from "react";
 import { useCookies } from "react-cookie";
 
+import "./assets/dark-index.css"; // Ensure you import your CSS file
 
 
 import ListHeader from "./components/Ui/ListHeader";
@@ -78,7 +79,21 @@ function App() {
   }
 
 
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Toggle the theme
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  // Apply the theme class to the body
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [isDarkMode]);
 
   const makeNewContainer = async () => {
     try {
@@ -119,7 +134,7 @@ function App() {
   console.log("containers:", containers);
 
   return (
-    <div>
+    <div >
       {!authToken && (
         <div className="auth-outer-container">
           <Auth />
@@ -128,8 +143,8 @@ function App() {
       {/* //(!isNavbarOpen || !isMobile) && */}
 
       {authToken && (
-        <div className={`app ${isNavbarOpen ? "blurred" : ""}`}>
-
+        <div className={`app ${isDarkMode ? "dark-mode" : ""}`}>
+        
           <div className="side-bar">
             <SideBar
               containers={containers}
@@ -148,6 +163,8 @@ function App() {
                 listName={name + "Tick List"}
                 userId={userId}
                 getData={getTasksInList}
+                toggleTheme={toggleTheme}
+                isDarkMode={isDarkMode}
               />
 
               <br />

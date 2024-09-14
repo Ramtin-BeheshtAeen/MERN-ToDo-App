@@ -25,6 +25,9 @@ function ListHeader(props) {
         <button className="danger-button" onClick={signOut}>
           SIGN OUT
         </button>
+        <button onClick={props.toggleTheme}>
+        {props.isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      </button>
       </div>
       {showModel && (
         <Model
