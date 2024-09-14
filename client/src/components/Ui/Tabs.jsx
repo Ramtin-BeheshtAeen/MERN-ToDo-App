@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
-import ListItem from "../ListItem";
+import ListItem from "./ListItem";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

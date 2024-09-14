@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import BasicSelect from "./Ui/MultiSelect";
+import BasicSelect from "./MultiSelect";
 import dayjs from "dayjs";
 
 const ListModel = ({

@@ -11,11 +11,11 @@ import {
   useProSidebar,
 } from "react-pro-sidebar";
 
-import ListHeader from "./components/ListHeader";
-import ListItem from "./components/ListItem";
-import Auth from "./components/Auth";
-import GroupModel from "./components/ContainerModel";
-import ListModel from "./components/ListModel";
+import ListHeader from "./components/Ui/ListHeader";
+import ListItem from "./components/Ui/ListItem";
+import Auth from "./components/Ui/Auth";
+import GroupModel from "./components/Ui/ContainerModel";
+import ListModel from "./components/Ui/ListModel";
 import MyTabs from "./components/Ui/Tabs";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -64,10 +64,10 @@ function App() {
   ///// Functions //////
   //////////////////////////////////////////////////////////////////////////////
 
-  async function getData() {
+  async function getTasksInList() {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}`
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}/${currentListId}`
       );
       const json = await response.json();
       setTask(json);
@@ -76,20 +76,7 @@ function App() {
     }
   }
 
-  async function getSpecificListData({ listId }) {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}` /
-          `${listId}`
-      );
-      const json = await response.json();
-      setTask(json);
 
-      setTask(json);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   async function getContainers() {
     try {
@@ -105,6 +92,7 @@ function App() {
   }
 
   function editList(listId, listName, listContainerId) {
+    console.log("Edit List")
     setCurrentListId(listId);
     setCurrentListName(listName);
     setCurrentListContainerId(listContainerId);
@@ -131,7 +119,7 @@ function App() {
 
   useEffect(() => {
     if (authToken) {
-      getData();
+      getTasksInList();
       getContainers();
     }
   }, [authToken]);
@@ -186,9 +174,9 @@ function App() {
                       <div className="side-nav-container-section">
                         {container.name}
                         <MoreVertIcon
-                          onClick={() =>
-                            editContainer(container._id, container.name)
-                          }
+                          // onClick={() =>
+                          //   editContainer(container._id, container.name)
+                          // }
                           style={{ marginLeft: "auto", cursor: "pointer" }}
                         />
                       </div>
@@ -200,7 +188,7 @@ function App() {
                       <MenuItem icon={<ViewListIcon />}>
                         <div
                           className="side-nav-list-section"
-                          onClick={() => getListData(list._id)}
+                          onClick={() => {setCurrentListId(list._id); getTasksInList()} }
                           ref={setReferenceElement}>
                           {list.name}
 
@@ -208,22 +196,14 @@ function App() {
                           {showPopup &&
                             createPortal(
                               <div
-                                class="options"
+                                className="options"
                                 ref={setPopperElement}
                                 style={styles.popper}
                                 {...attributes.popper}>
-                                <div class="option">
-                                  <EditIcon
-                                    fontSize="lg"
-                                    onClick={() =>
-                                      editList(
-                                        list._id,
-                                        list.name,
-                                        container._id
-                                      )
-                                    }
-                                  />{" "}
-                                  Edit
+
+                                <div class="option" onClick={() =>editList(list._id, list.name, container._id)}>
+                                  <EditIcon fontSize="lg"/>
+                                   Edit
                                 </div>
 
                                 <div class="option">
@@ -263,7 +243,7 @@ function App() {
               <ListHeader
                 listName={name + "Tick List"}
                 userId={userId}
-                getData={getData}
+                getData={getTasksInList}
               />
 
               <br />
@@ -290,7 +270,7 @@ function App() {
                       key={task._id}
                       task={task}
                       userId={userId}
-                      getData={getData}
+                      getData={getTasksInList}
                     />
                   ))}
                 </div>
@@ -299,7 +279,7 @@ function App() {
                   <MyTabs
                     tasks={sortedTasks}
                     userId={userId}
-                    getData={getData}
+                    getData={getTasksInList}
                   />
                 </div>
               )}
@@ -310,7 +290,7 @@ function App() {
                   mode={"create"}
                   setShowModel={setShowGroupModel}
                   userId={userId}
-                  getData={getData}
+                  getData={getTasksInList}
                 />
               )}
 
@@ -322,7 +302,7 @@ function App() {
                   mode={"edit"}
                   setShowModel={setShowEditListModel}
                   userId={userId}
-                  getData={getData}
+                  getData={getTasksInList}
                   listName={currentListName}
                   currentListContainerId={currentListContainerId}
                 />
@@ -336,7 +316,7 @@ function App() {
                   mode={"create"}
                   setShowModel={setShowCreateListModel}
                   userId={userId}
-                  getData={getData}
+                  getData={getTasksInList}
                   listName={currentListName}
                   currentListContainerId={currentListContainerId}
                 />

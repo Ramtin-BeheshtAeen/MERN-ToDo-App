@@ -6,37 +6,38 @@ import List from "../models/list.js";
 import express from "express";
 const router = express.Router();
 
-//get all tasks of a specific list:
-
-
 
 //get all to-do of a specific user:
 router.get("/:userId/:listId", async (req, res) => {
   //destruct the Param:
   const { userId, listId } = req.params;
+
   try {
-    // Find the default container for the user
-    const container = await Container.findOne({
-      user: userId,
-      name: "Default Container",
-    });
-    if (!container) {
-      throw new Error("Default container not found");
-    }
+      //[1]Find The List By Id:
+      const list = await List.findById(listId).populate([
+        { path: "container" },
+        { path: "tasks" }
+      ]);
 
-    // Find the default list in the default container
-    const list = await List.findOne({
-      container: container._id,
-      name: "Default List",
-    });
-    if (!list) {
-      throw new Error("Default list not found");
-    }
+      console.log(list)
 
-    // Find tasks in the default list
-    const tasks = await Task.find({ list: list._id }).populate("list").exec();
+      if (!list) {
+        console.log("List not Found")
+        return res.status(404).json({ message: "List not found" });
+      }
 
-    res.json(tasks);
+      //[2] Check if user is the owner of the list's container:
+      if (list.container.user.toString() === userId.toString()) {
+        // const list = await List.findById(listId).populate("tasks");
+        console.log(list.tasks)
+        res.json(list.tasks);
+
+      } else {
+        return res
+          .status(403)
+          .json({ message: "You are not authorized to update this list" });
+      }
+
   } catch (err) {
     console.log(err);
     res.status(500).json({
