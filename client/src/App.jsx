@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import "./assets/dark-index.css"; // Ensure you import your CSS file
 
 
+
 import ListHeader from "./components/Ui/ListHeader";
 import ListItem from "./components/Ui/ListItem";
 import Auth from "./components/Ui/Auth";
@@ -102,10 +103,7 @@ function App() {
     }
   };
 
-  const toggleNavbar = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-    collapseSidebar();
-  };
+
 
   useEffect(() => {
     if (authToken) {
@@ -147,8 +145,9 @@ function App() {
         
           <div className="side-bar">
             <SideBar
+            isNavbarOpen={isNavbarOpen}
+            setIsNavbarOpen={setIsNavbarOpen}
               containers={containers}
-              toggleNavbar={toggleNavbar}
               setShowCreateListModel={setShowCreateListModel}
               setShowGroupModel={setShowGroupModel}
               editList={editList}

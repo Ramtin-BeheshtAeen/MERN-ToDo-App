@@ -21,7 +21,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 
-export default function SideBar({ containers, toggleNavbar, setShowCreateListModel, setShowGroupModel, editList, getTasksInList }) {
+export default function SideBar({ containers,isNavbarOpen ,setIsNavbarOpen ,setShowCreateListModel, setShowGroupModel, editList, getTasksInList }) {
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -37,12 +37,17 @@ export default function SideBar({ containers, toggleNavbar, setShowCreateListMod
 
   const { collapseSidebar } = useProSidebar();
 
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen);
+    collapseSidebar();
+  };
+
   return (
     <Sidebar style={{ height: "90vh" }}>
       <Menu>
         <MenuItem
           icon={<MenuOutlinedIcon />}
-          onClick={() => toggleNavbar()}
+          onClick={toggleNavbar}
           style={{ textAlign: "center" }}>
           {" "}
           <h4>Admin</h4>
