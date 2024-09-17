@@ -1,9 +1,7 @@
 import { useEffect, useState, React } from "react";
 import { useCookies } from "react-cookie";
 
-import "./assets/dark-index.css"; // Ensure you import your CSS file
-
-
+// import "./assets/dark-index.css"; // Ensure you import your CSS file
 
 import ListHeader from "./components/Ui/ListHeader";
 import ListItem from "./components/Ui/ListItem";
@@ -14,8 +12,6 @@ import MyTabs from "./components/Ui/Tabs";
 import SideBar from "./components/Ui/SideBar";
 
 function App() {
-
-
   //////////////////////////////////////////////////////////////////////////////
   ///// Use States //////
   //////////////////////////////////////////////////////////////////////////////
@@ -49,7 +45,9 @@ function App() {
   async function getTasksInList() {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/tasks/${userId}/${currentListId}`
+        `${
+          import.meta.env.VITE_APP_BACKEND_SERVER_URL
+        }/tasks/${userId}/${currentListId}`
       );
       const json = await response.json();
       setTask(json);
@@ -72,29 +70,28 @@ function App() {
   }
 
   function editList(listId, listName, listContainerId) {
-    console.log("Edit List")
+    console.log("Edit List");
     setCurrentListId(listId);
     setCurrentListName(listName);
     setCurrentListContainerId(listContainerId);
     setShowEditListModel(true);
   }
 
+  // const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  // // Toggle the theme
+  // const toggleTheme = () => {
+  //   setIsDarkMode(!isDarkMode);
+  // };
 
-  // Toggle the theme
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  // Apply the theme class to the body
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  }, [isDarkMode]);
+  // // Apply the theme class to the body
+  // useEffect(() => {
+  //   if (isDarkMode) {
+  //     document.body.classList.add("dark-mode");
+  //   } else {
+  //     document.body.classList.remove("dark-mode");
+  //   }
+  // }, [isDarkMode]);
 
   const makeNewContainer = async () => {
     try {
@@ -102,8 +99,6 @@ function App() {
       console.log(err);
     }
   };
-
-
 
   useEffect(() => {
     if (authToken) {
@@ -132,7 +127,7 @@ function App() {
   console.log("containers:", containers);
 
   return (
-    <div >
+    <div>
       {!authToken && (
         <div className="auth-outer-container">
           <Auth />
@@ -141,12 +136,13 @@ function App() {
       {/* //(!isNavbarOpen || !isMobile) && */}
 
       {authToken && (
-        <div className={`app ${isDarkMode ? "dark-mode" : ""}`}>
-        
+        /* <div className={`app ${isDarkMode ? "dark-mode" : ""}`}> */
+        <div className="app">
           <div className="side-bar">
             <SideBar
-            isNavbarOpen={isNavbarOpen}
-            setIsNavbarOpen={setIsNavbarOpen}
+              setCurrentListId={setCurrentListId}
+              isNavbarOpen={isNavbarOpen}
+              setIsNavbarOpen={setIsNavbarOpen}
               containers={containers}
               setShowCreateListModel={setShowCreateListModel}
               setShowGroupModel={setShowGroupModel}
@@ -155,15 +151,15 @@ function App() {
             />
           </div>
 
-
           {(!isNavbarOpen || !isMobile) && (
             <div className="tasks-container">
               <ListHeader
                 listName={name + "Tick List"}
                 userId={userId}
+                listId={currentListId}
                 getData={getTasksInList}
-                toggleTheme={toggleTheme}
-                isDarkMode={isDarkMode}
+                // toggleTheme={toggleTheme}
+                // isDarkMode={isDarkMode}
               />
 
               <br />
@@ -204,6 +200,7 @@ function App() {
                 </div>
               )}
 
+              {/* //Create New Container */}
               {showGroupModel && (
                 <GroupModel
                   element={"Group"}
@@ -214,6 +211,7 @@ function App() {
                 />
               )}
 
+              {/* //Edit the Current List */}
               {showEditListModel && (
                 <ListModel
                   containers={containers}
@@ -228,6 +226,7 @@ function App() {
                 />
               )}
 
+              {/* //Make New List */}
               {showCreateListModel && (
                 <ListModel
                   containers={containers}

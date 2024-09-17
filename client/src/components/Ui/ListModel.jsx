@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import BasicSelect from "./MultiSelect";
+import BasicSelect from "../Form/MultiSelect";
 import dayjs from "dayjs";
 
 const ListModel = ({
@@ -16,7 +16,7 @@ const ListModel = ({
   const editMode = mode === "edit" ? true : false;
 
   const [listNewName, setListNewName] = useState(listName);
-  const [selectedContainer, setSelectedContainer] = useState(null);
+  const [selectedContainer, setSelectedContainer] = useState({id: currentListContainerId})
 
   const handleListNameChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +57,7 @@ const ListModel = ({
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 200) {
         setShowModel(false);
+        location.reload()
       } else {
         console.log(response);
       }
@@ -66,7 +67,7 @@ const ListModel = ({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleCreateSubmit = (e) => {
     // /list/:userId
     e.preventDefault();
     console.log("Submitted");
@@ -100,7 +101,7 @@ const ListModel = ({
 
           <input
             type="submit"
-            onClick={editMode ? handleEditSubmit : handleSubmit}
+            onClick={editMode ? handleEditSubmit : handleCreateSubmit}
           />
         </form>
       </div>

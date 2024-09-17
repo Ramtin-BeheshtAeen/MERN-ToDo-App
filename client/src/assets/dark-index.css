@@ -14,7 +14,8 @@
   .dark-mode {
     --container-background: #2b2b2b;
     --background-color: #0d0d0d;
-    --text-color: #c0c0c0;
+    --Menu-text-color: #000000;
+    --text-color: #c7bebe;
     --container-background: #1a1a1a;
     --box-shadow: rgba(0, 255, 255, 0.5) 0 6px 24px, rgba(0, 255, 255, 0.2) 0 0 0 1px;
     --border-color: rgba(255, 255, 255, 0.1);
@@ -71,6 +72,7 @@
   }
   
   .side-bar {
+    color: var(--Menu-text-color);
     padding-right: 1%;
   }
   
