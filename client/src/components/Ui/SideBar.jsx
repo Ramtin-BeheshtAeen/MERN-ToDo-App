@@ -10,8 +10,6 @@ import {
   useProSidebar,
 } from "react-pro-sidebar";
 
-
-
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -20,9 +18,17 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-
-export default function SideBar({ containers,isNavbarOpen ,setIsNavbarOpen ,setShowCreateListModel, setShowGroupModel, editList, getTasksInList, setCurrentListId }) {
-
+export default function SideBar({
+  containers,
+  isNavbarOpen,
+  setIsNavbarOpen,
+  setShowCreateListModel,
+  setShowGroupModel,
+  editList,
+  deleteList,
+  getTasksInList,
+  setCurrentListId,
+}) {
   const [showPopup, setShowPopup] = useState(false);
 
   const [referenceElement, setReferenceElement] = useState();
@@ -97,7 +103,11 @@ export default function SideBar({ containers,isNavbarOpen ,setIsNavbarOpen ,setS
                           Edit
                         </div>
 
-                        <div class="option">
+                        <div
+                          class="option"
+                          onClick={() =>
+                            deleteList(list._id, container._id)
+                          }>
                           <DeleteOutlineIcon fontSize="lg" />
                           Delete
                         </div>

@@ -111,7 +111,41 @@ router.put("/:userId/:listId", async (req, res) => {
 });
 
 
+// Route to delete a list and its associated tasks
+router.delete('/lists/:userId/:listId', authenticateUser, async (req, res) => {
+  const { userId, listId } = req.params;
 
+  try {
+    // Find the list by ID
+    const list = await List.findById(listId).populate('container');
+    if (!list) {
+      return res.status(404).json({ message: 'List not found' });
+    }
+
+    // Check if the user is the owner of the list's container
+    if (list.container.user.toString() !== userId.toString()) {
+      return res.status(403).json({ message: 'You are not authorized to delete this list' });
+    }
+
+    // Remove the list from the container
+    const container = await Container.findById(list.container._id);
+    if (container) {
+      container.lists.pull(list._id);
+      await container.save();
+    }
+
+    // Delete the tasks associated with the list
+    await Task.deleteMany({ list: listId });
+
+    // Delete the list
+    await list.remove();
+
+    res.status(200).json({ message: 'List and associated tasks deleted successfully' });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 
 
 

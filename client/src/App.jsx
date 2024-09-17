@@ -29,6 +29,8 @@ function App() {
   const [showEditListModel, setShowEditListModel] = useState(false);
   const [showCreateListModel, setShowCreateListModel] = useState(false);
 
+  const [showDeleteModel, setShowDeleteModel] = useState(false);
+
   const [showGroupModel, setShowGroupModel] = useState(false);
 
   //////////////////////////////////////////////////////////////////////////////
@@ -75,6 +77,14 @@ function App() {
     setCurrentListName(listName);
     setCurrentListContainerId(listContainerId);
     setShowEditListModel(true);
+  }
+
+  function deleteList(listId, listName, listContainerId) {
+    console.log("Edit List");
+    setCurrentListId(listId);
+    setCurrentListName(listName);
+    setCurrentListContainerId(listContainerId);
+    setShowDeleteModel(true);
   }
 
   // const [isDarkMode, setIsDarkMode] = useState(false);
