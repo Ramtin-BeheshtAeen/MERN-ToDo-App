@@ -39,7 +39,7 @@ router.post("/:userId", async (req, res) => {
     container.lists.push(newList._id)
     await container.save()
   
-    res.status(201).json({ message: 'List created successfully', list: newList });
+    res.status(200).json({ message: 'List created successfully', list: newList });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
@@ -112,21 +112,7 @@ router.put("/:userId/:listId", async (req, res) => {
 
 
 
-//Getting All Containers Of User:
-// router.get("/:userId/:containerId", async (req, res) => {
-//   const { userId, containerId } = req.params;
-//   console.log(userId);
-//   try {
-//     const userContainer = await Container.findOne();
 
-//     if (!user) {
-//       return res.status(404).json({ message: "user not found" });
-//     }
 
-//     res.status(200).json(user.containers);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: error.message });
-//   }
-// });
+
 export default router;

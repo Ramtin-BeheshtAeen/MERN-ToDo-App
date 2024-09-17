@@ -16,7 +16,9 @@ const ListModel = ({
   const editMode = mode === "edit" ? true : false;
 
   const [listNewName, setListNewName] = useState(listName);
-  const [selectedContainer, setSelectedContainer] = useState({id: currentListContainerId})
+  const [selectedContainer, setSelectedContainer] = useState({
+    id: currentListContainerId,
+  });
 
   const handleListNameChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +30,6 @@ const ListModel = ({
   };
 
   const handleEditSubmit = async (e) => {
-    console.log(selectedContainer);
     e.preventDefault();
 
     const editData = {
@@ -57,7 +58,7 @@ const ListModel = ({
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 200) {
         setShowModel(false);
-        location.reload()
+        location.reload();
       } else {
         console.log(response);
       }
@@ -67,10 +68,41 @@ const ListModel = ({
     }
   };
 
-  const handleCreateSubmit = (e) => {
-    // /list/:userId
+  const handleCreateSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitted");
+    const editData = {
+      // _id: userId,
+      name: listNewName,
+      containerId: selectedContainer.id,
+    };
+
+    const formData = editMode
+      ? { ...editData, updatedAt: dayjs().format() }
+      : { ...editData };
+      
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/list/${userId}`,
+        {
+          method: "Post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      // Use 200 OK for general success responses.
+      // Use 201 Created when a new resource has been created successfully.
+      if (response.status === 200) {
+        setShowModel(false);
+        location.reload();
+      } else {
+        console.log(response);
+      }
+    } catch (err) {
+      console.log(" \n error  \n");
+      console.log(err);
+    }
   };
 
   return (
@@ -80,8 +112,7 @@ const ListModel = ({
           <h3>
             Let's {mode} {listName}
           </h3>
-            <button onClick={() => setShowModel(false)}> X </button>
-            
+          <button onClick={() => setShowModel(false)}> X </button>
         </div>
 
         <form>
