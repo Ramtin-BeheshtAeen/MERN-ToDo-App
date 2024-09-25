@@ -27,7 +27,7 @@ const Auth = () => {
       return;
     }
     console.log(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/${endpoint}`)
-    const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/${endpoint}`, {
+    const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/auth/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: isLogIn

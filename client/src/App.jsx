@@ -1,90 +1,255 @@
 import { useEffect, useState, React } from "react";
-import ListHeader from "./components/ListHeader";
-import ListItem from "./components/ListItem";
-import Auth from "./components/Auth";
 import { useCookies } from "react-cookie";
-import MyTabs from "./components/Ui/Tabs";
 
+// import "./assets/dark-index.css"; // Ensure you import your CSS file
+
+import ListHeader from "./components/Ui/ListHeader";
+import ListItem from "./components/Ui/ListItem";
+import Auth from "./components/Ui/Auth";
+import GroupModel from "./components/Ui/ContainerModel";
+import ListModel from "./components/Ui/ListModel";
+import MyTabs from "./components/Ui/Tabs";
+import SideBar from "./components/Ui/SideBar";
 
 function App() {
-  // const [listName, setListName] = useState('')
+  //////////////////////////////////////////////////////////////////////////////
+  ///// Use States //////
+  //////////////////////////////////////////////////////////////////////////////
+  const [isNavbarOpen, setIsNavbarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [cookies, setCookie, removeCookie] = useCookies(null);
-  const [task, setTask] = useState([]); // Initialize as an empty array
+  const [task, setTask] = useState([]);
+  const [containers, setContainers] = useState([]);
   const [showAll, setShowAll] = useState(true);
 
+  const [currentListId, setCurrentListId] = useState("");
+  const [currentListName, setCurrentListName] = useState("");
+  const [currentListContainerId, setCurrentListContainerId] = useState("");
+
+  const [showEditListModel, setShowEditListModel] = useState(false);
+  const [showCreateListModel, setShowCreateListModel] = useState(false);
+
+  const [showDeleteModel, setShowDeleteModel] = useState(false);
+
+  const [showGroupModel, setShowGroupModel] = useState(false);
+
+  //////////////////////////////////////////////////////////////////////////////
+  ///// Const //////
+  //////////////////////////////////////////////////////////////////////////////
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
   const name = cookies.Name;
 
+  //////////////////////////////////////////////////////////////////////////////
+  ///// Functions //////
+  //////////////////////////////////////////////////////////////////////////////
 
-  async function getData() {
+  async function getTasksInList() {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/todo/${userId}`
+        `${
+          import.meta.env.VITE_APP_BACKEND_SERVER_URL
+        }/tasks/${userId}/${currentListId}`
       );
       const json = await response.json();
-      console.log("Fetched data:", json); // Log the fetched data
       setTask(json);
     } catch (err) {
       console.log(err);
     }
   }
 
+  async function getContainers() {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/containers/${userId}`
+      );
+      const json = await response.json();
+      console.log("Fetched data:", json); // Log the fetched data
+      setContainers(json);
+    } catch (err) {
+      console.log("Error While Getting Container And List Data: \n" + err);
+    }
+  }
+
+  function editList(listId, listName, listContainerId) {
+    console.log("Edit List");
+    setCurrentListId(listId);
+    setCurrentListName(listName);
+    setCurrentListContainerId(listContainerId);
+    setShowEditListModel(true);
+  }
+
+  function deleteList(listId, listName, listContainerId) {
+    console.log("Edit List");
+    setCurrentListId(listId);
+    setCurrentListName(listName);
+    setCurrentListContainerId(listContainerId);
+    setShowDeleteModel(true);
+  }
+
+  // const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // // Toggle the theme
+  // const toggleTheme = () => {
+  //   setIsDarkMode(!isDarkMode);
+  // };
+
+  // // Apply the theme class to the body
+  // useEffect(() => {
+  //   if (isDarkMode) {
+  //     document.body.classList.add("dark-mode");
+  //   } else {
+  //     document.body.classList.remove("dark-mode");
+  //   }
+  // }, [isDarkMode]);
+
+  const makeNewContainer = async () => {
+    try {
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     if (authToken) {
-      getData();
+      getTasksInList();
+      getContainers();
     }
   }, [authToken]);
 
   useEffect(() => {
-    console.log("Tasks state updated:", task); // Log the state whenever it changes
-  }, [task]);
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        collapseSidebar();
+      }
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-  const sortedTasks = task?.sort(
-    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-  );
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const sortedTasks = Array.isArray(task)
+    ? task.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+    : [];
+
   console.log("tasks:", sortedTasks);
+  console.log("containers:", containers);
 
   return (
-    <div className="app">
-      {!authToken && <Auth />}
+    <div>
+      {!authToken && (
+        <div className="auth-outer-container">
+          <Auth />
+        </div>
+      )}
+      {/* //(!isNavbarOpen || !isMobile) && */}
 
       {authToken && (
-        <div>
-
-          <ListHeader
-            listName={name + "Tick List"}
-            userId={userId}
-            getData={getData}
-          />
-          
-          <br/>
-
-          <div className="button-container">
-            <button className="primary-button" onClick={() => setShowAll(true)} >
-              Show All Tasks
-            </button>
-            <button className="primary-button"  onClick={() => setShowAll(false)}>
-              Eisenhower Matrix
-            </button>
+        /* <div className={`app ${isDarkMode ? "dark-mode" : ""}`}> */
+        <div className="app">
+          <div className="side-bar">
+            <SideBar
+              setCurrentListId={setCurrentListId}
+              isNavbarOpen={isNavbarOpen}
+              setIsNavbarOpen={setIsNavbarOpen}
+              containers={containers}
+              setShowCreateListModel={setShowCreateListModel}
+              setShowGroupModel={setShowGroupModel}
+              editList={editList}
+              getTasksInList={getTasksInList}
+            />
           </div>
 
-          <br/>
+          {(!isNavbarOpen || !isMobile) && (
+            <div className="tasks-container">
+              <ListHeader
+                listName={name + "Tick List"}
+                userId={userId}
+                listId={currentListId}
+                getData={getTasksInList}
+                // toggleTheme={toggleTheme}
+                // isDarkMode={isDarkMode}
+              />
 
-          {showAll ? (
-            <div>
-              {sortedTasks?.map((task) => (
-                <ListItem
-                  key={task._id}
-                  task={task}
+              <br />
+
+              <div className="button-container">
+                <button
+                  className="primary-button"
+                  onClick={() => setShowAll(true)}>
+                  Show All Tasks
+                </button>
+                <button
+                  className="primary-button"
+                  onClick={() => setShowAll(false)}>
+                  Eisenhower Matrix
+                </button>
+              </div>
+
+              <br />
+
+              {showAll ? (
+                <div>
+                  {sortedTasks?.map((task) => (
+                    <ListItem
+                      key={task._id}
+                      task={task}
+                      userId={userId}
+                      getData={getTasksInList}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <MyTabs
+                    tasks={sortedTasks}
+                    userId={userId}
+                    getData={getTasksInList}
+                  />
+                </div>
+              )}
+
+              {/* //Create New Container */}
+              {showGroupModel && (
+                <GroupModel
+                  element={"Group"}
+                  mode={"create"}
+                  setShowModel={setShowGroupModel}
                   userId={userId}
-                  getData={getData}
+                  getData={getTasksInList}
                 />
-              ))}
-            </div>
-          ) : (
-            <div>
-              <MyTabs tasks={sortedTasks} userId={userId} getData={getData} />
+              )}
+
+              {/* //Edit the Current List */}
+              {showEditListModel && (
+                <ListModel
+                  containers={containers}
+                  listId={currentListId}
+                  element={"List"}
+                  mode={"edit"}
+                  setShowModel={setShowEditListModel}
+                  userId={userId}
+                  getData={getTasksInList}
+                  listName={currentListName}
+                  currentListContainerId={currentListContainerId}
+                />
+              )}
+
+              {/* //Make New List */}
+              {showCreateListModel && (
+                <ListModel
+                  containers={containers}
+                  listId={currentListId}
+                  element={"List"}
+                  mode={"create"}
+                  setShowModel={setShowCreateListModel}
+                  userId={userId}
+                  getData={getTasksInList}
+                  listName={currentListName}
+                  currentListContainerId={currentListContainerId}
+                />
+              )}
             </div>
           )}
         </div>
