@@ -76,6 +76,7 @@ function App() {
     setCurrentListId(listId);
     setCurrentListName(listName);
     setCurrentListContainerId(listContainerId);
+    console.log("Test" + currentListId+ currentListName + currentListContainerId)
     setShowEditListModel(true);
   }
 

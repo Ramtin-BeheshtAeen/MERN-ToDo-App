@@ -133,7 +133,7 @@ export default function SideBar({
             }
             icon={<LibraryBooksIcon />}>
             {container.lists.map((list, listIndex) => {
-              const listIndexRef = ((listIndex + 1) + (index + 1));
+              const listIndexRef = `${index}-${listIndex}`
               return (
                 <MenuItem icon={<ViewListIcon />}>
                   <div
