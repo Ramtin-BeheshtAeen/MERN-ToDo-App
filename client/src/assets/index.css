@@ -309,10 +309,13 @@ input {
   display: flex;
   flex-direction: column;
   width: 100px;
+  margin: 0;
+  padding: 0;
 }
+
 .option {
   padding: 10px;
-  margin: 5px 0;
+  margin: 0;
   text-align: left;
   cursor: pointer;
 }

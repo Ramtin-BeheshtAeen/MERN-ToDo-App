@@ -1,4 +1,4 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, useRef, React } from "react";
 import { createPortal } from "react-dom";
 
 import { usePopper } from "react-popper";
@@ -29,16 +29,47 @@ export default function SideBar({
   getTasksInList,
   setCurrentListId,
 }) {
-  const [showPopup, setShowPopup] = useState(false);
+  const listReferenceElements = useRef([]);
+  // const listPopperElements = useRef([]);
 
-  const [referenceElement, setReferenceElement] = useState();
-  const [popperElement, setPopperElement] = useState();
 
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "bottom",
-  });
-  const togglePopup = () => {
-    setShowPopup(!showPopup);
+  const setRef = (element, index) => {
+    listReferenceElements.current[index] = element;
+  };
+
+  const [currentListName, setCurrentListName] = useState()
+  const [currentListContainer, setCurrentListContainer] = useState()
+  const [currentListIdForPortal, setCurrentListIdForPortal] = useState()
+
+
+  const [showEditListPopup, setShowEditListPopup] = useState(false);
+  const [showEditContainerPopup, setShowEditContainerPopup] = useState(false);
+
+  const [listReferenceElement, setListReferenceElement] = useState();
+  const [listPopperElement, setListPopperElement] = useState();
+
+  const [containerReferenceElement, setContainerReferenceElement] = useState();
+  const [containerPopperElement, setContainerPopperElement] = useState();
+
+  const [currentListIndex, setCurrentListIndex] = useState(null);
+  // listReferenceElements.current[currentListIndex],
+  const { styles, attributes} = usePopper(
+    listReferenceElements.current[currentListIndex],
+    listPopperElement,
+    {
+      placement: "left",
+    }
+  );
+
+  const toggleListEditPopup = (index) => {
+    setCurrentListIndex(index);
+    console.log("index:" + index);
+    setShowEditListPopup(!showEditListPopup);
+  };
+
+
+  const toggleContainerEditPopup = () => {
+    setShowEditContainerPopup(!showEditContainerPopup);
   };
 
   const { collapseSidebar } = useProSidebar();
@@ -63,60 +94,95 @@ export default function SideBar({
 
         {containers.map((container, index) => (
           <SubMenu
+            key={index}
             label={
               <div className="side-nav-container-section">
                 {container.name}
                 <MoreVertIcon
-                  // onClick={() =>
-                  //   editContainer(container._id, container.name)
-                  // }
+                  ref={setContainerReferenceElement}
+                  onClick={toggleContainerEditPopup}
                   style={{ marginLeft: "auto", cursor: "pointer" }}
                 />
+
+                {showEditContainerPopup &&
+                  createPortal(
+                    <div
+                      className="options"
+                      style={styles.popper}
+                      ref={setContainerPopperElement}
+                      {...attributes.popper}>
+                      <div
+                        class="option"
+                        onClick={() => editContainer(container._id)}>
+                        <EditIcon fontSize="lg" />
+                        Edit
+                      </div>
+
+                      <div
+                        class="option"
+                        onClick={() =>
+                          deleteContainer(list._id, container._id)
+                        }>
+                        <DeleteOutlineIcon fontSize="lg" />
+                        Delete
+                      </div>
+                    </div>,
+                    document.body
+                  )}
               </div>
             }
             icon={<LibraryBooksIcon />}>
-            {container.lists.map((list, index) => (
-              <MenuItem icon={<ViewListIcon />}>
-                <div
-                  className="side-nav-list-section"
-                  onClick={() => {
-                    setCurrentListId(list._id);
-                    getTasksInList();
-                  }}
-                  ref={setReferenceElement}>
-                  {list.name}
+            {container.lists.map((list, listIndex) => {
+              const listIndexRef = ((listIndex + 1) + (index + 1));
+              return (
+                <MenuItem icon={<ViewListIcon />}>
+                  <div
+                    className="side-nav-list-section"
+                    onClick={() => {
+                      setCurrentListId(list._id);
+                      getTasksInList();
+                    }}>
+                    {list.name}
 
-                  <MoreVertIcon onClick={togglePopup} />
-                  {showPopup &&
-                    createPortal(
-                      <div
-                        className="options"
-                        ref={setPopperElement}
-                        style={styles.popper}
-                        {...attributes.popper}>
-                        <div
-                          class="option"
-                          onClick={() =>
-                            editList(list._id, list.name, container._id)
-                          }>
-                          <EditIcon fontSize="lg" />
-                          Edit
-                        </div>
+                    <MoreVertIcon
+                      onClick={() =>{ toggleListEditPopup(listIndexRef);
+                        setCurrentListIdForPortal(list._id);
+                        setCurrentListName(list.name);
+                        setCurrentListContainer(container._id);
+                      }}
+                      ref={(el) => setRef(el, listIndexRef)}      
+                      
+                    />
 
+                    {showEditListPopup &&
+                      createPortal(
                         <div
-                          class="option"
-                          onClick={() =>
-                            deleteList(list._id, container._id)
-                          }>
-                          <DeleteOutlineIcon fontSize="lg" />
-                          Delete
-                        </div>
-                      </div>,
-                      document.body
-                    )}
-                </div>
-              </MenuItem>
-            ))}
+                          className="options"
+                          ref={setListPopperElement}
+                          style={styles.popper}
+                          {...attributes.popper}>
+                          <div
+                            class="option"
+                            onClick={() =>
+                              editList(currentListIdForPortal, currentListName, currentListContainer)
+                            }>
+                            <EditIcon fontSize="lg" />
+                            Edit
+                          </div>
+
+                          <div
+                            class="option"
+                            onClick={() => deleteList(currentListIdForPortal, currentListName)}>
+                            <DeleteOutlineIcon fontSize="lg" />
+                            Delete
+                          </div>
+                        </div>,
+                        document.body
+                      )}
+                  </div>
+                </MenuItem>
+              );
+            })}
           </SubMenu>
         ))}
 

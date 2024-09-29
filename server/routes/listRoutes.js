@@ -112,7 +112,7 @@ router.put("/:userId/:listId", async (req, res) => {
 
 
 // Route to delete a list and its associated tasks
-router.delete('/lists/:userId/:listId', authenticateUser, async (req, res) => {
+router.delete('/lists/:userId/:listId', async (req, res) => {
   const { userId, listId } = req.params;
 
   try {
