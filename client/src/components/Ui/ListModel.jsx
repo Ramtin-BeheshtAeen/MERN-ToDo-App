@@ -13,6 +13,15 @@ const ListModel = ({
   listName,
   currentListContainerId,
 }) => {
+
+  useEffect(() => {
+    console.log("ListModel Props:", {
+      listId,
+      listName,
+      currentListContainerId,
+    });
+  }, [listId, listName, currentListContainerId]);
+
   const editMode = mode === "edit" ? true : false;
 
   const [listNewName, setListNewName] = useState(listName);

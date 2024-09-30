@@ -2,6 +2,7 @@ import express from "express";
 import User from "../models/user.js";
 import List from "../models/list.js";
 import Container from "../models/container.js";
+import Task from "../models/task.js";
 
 const router = express.Router();
 
@@ -80,10 +81,12 @@ router.put("/:userId/:listId", async (req, res) => {
       list.name = name;
     }
 
+    console.log("container ID" + containerId)
+    console.log("list.container._id" + list.container._id.toString())
+
     // - [ 4 ] Change The connected container if is Provided and Differ from Old one:
     if (containerId !== list.container._id.toString()) {
-      console.log("container ID" + containerId)
-      console.log("list_id" + list.container._id.toString())
+      console.log("inside if for change container")
       //[ 4-1 ]Find New Container:
       const newContainer = await Container.findById(containerId);
       if (!newContainer) {
@@ -140,7 +143,7 @@ router.delete('/:userId/:listId', async (req, res) => {
     await Task.deleteMany({ list: listId });
 
     // Delete the list
-    await list.remove();
+    await list.deleteOne();
 
     res.status(200).json({ message: 'List and associated tasks deleted successfully' });
   } catch (error) {

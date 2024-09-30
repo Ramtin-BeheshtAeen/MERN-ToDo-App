@@ -6,6 +6,7 @@ const DeleteModel = ({ setShowModel, userId, listId }) => {
 
   const handleDelete = async () => {
     console.log("Item deleted");
+
     try {
       const response = await fetch(
         `${
@@ -17,10 +18,13 @@ const DeleteModel = ({ setShowModel, userId, listId }) => {
       );
       const json = await response.json();       
       console.log(json)
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
+
     setShowModel(false);
+
   };
 
   const handleCancel = () => {

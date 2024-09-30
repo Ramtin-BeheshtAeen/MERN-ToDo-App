@@ -24,6 +24,7 @@ function App() {
   const [showAll, setShowAll] = useState(true);
 
   const [currentListId, setCurrentListId] = useState("");
+
   const currentListIdRef = useRef(null);
   const currentListNameRef = useRef('');
   const currentListContainerIdRef = useRef(null);
@@ -229,7 +230,7 @@ function App() {
               {showEditListModel && (
                 <ListModel
                   containers={containers}
-                  listId={currentListId}
+                  listId={currentListIdRef.current}
                   element={"List"}
                   mode={"edit"}
                   setShowModel={setShowEditListModel}
@@ -245,7 +246,6 @@ function App() {
               {showCreateListModel && (
                 <ListModel
                   containers={containers}
-                  listId={currentListId}
                   element={"List"}
                   mode={"create"}
                   setShowModel={setShowCreateListModel}
