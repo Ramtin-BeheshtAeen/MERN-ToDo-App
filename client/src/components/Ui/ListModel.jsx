@@ -58,7 +58,8 @@ const ListModel = ({
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 200) {
         setShowModel(false);
-        location.reload();
+        // location.reload();
+        console.log(response)
       } else {
         console.log(response);
       }

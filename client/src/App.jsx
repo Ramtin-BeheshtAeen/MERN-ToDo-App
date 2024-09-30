@@ -1,4 +1,4 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState,useRef, React } from "react";
 import { useCookies } from "react-cookie";
 
 // import "./assets/dark-index.css"; // Ensure you import your CSS file
@@ -10,6 +10,7 @@ import GroupModel from "./components/Ui/ContainerModel";
 import ListModel from "./components/Ui/ListModel";
 import MyTabs from "./components/Ui/Tabs";
 import SideBar from "./components/Ui/SideBar";
+import DeleteModel from "./components/Ui/DeleteModel";
 
 function App() {
   //////////////////////////////////////////////////////////////////////////////
@@ -23,8 +24,9 @@ function App() {
   const [showAll, setShowAll] = useState(true);
 
   const [currentListId, setCurrentListId] = useState("");
-  const [currentListName, setCurrentListName] = useState("");
-  const [currentListContainerId, setCurrentListContainerId] = useState("");
+  const currentListIdRef = useRef(null);
+  const currentListNameRef = useRef('');
+  const currentListContainerIdRef = useRef(null);
 
   const [showEditListModel, setShowEditListModel] = useState(false);
   const [showCreateListModel, setShowCreateListModel] = useState(false);
@@ -73,18 +75,18 @@ function App() {
 
   function editList(listId, listName, listContainerId) {
     console.log("Edit List");
-    setCurrentListId(listId);
-    setCurrentListName(listName);
-    setCurrentListContainerId(listContainerId);
-    console.log("Test" + currentListId+ currentListName + currentListContainerId)
+    currentListIdRef.current = listId;
+    currentListNameRef.current = listName;
+    currentListContainerIdRef.current = listContainerId;
     setShowEditListModel(true);
+    console.log("Test", currentListIdRef.current, currentListNameRef.current, currentListContainerIdRef.current);
   }
 
   function deleteList(listId, listName, listContainerId) {
     console.log("Edit List");
-    setCurrentListId(listId);
-    setCurrentListName(listName);
-    setCurrentListContainerId(listContainerId);
+    currentListIdRef.current = listId
+    currentListNameRef.current = listName
+    currentListContainerIdRef.current = listContainerId;
     setShowDeleteModel(true);
   }
 
@@ -158,6 +160,7 @@ function App() {
               setShowCreateListModel={setShowCreateListModel}
               setShowGroupModel={setShowGroupModel}
               editList={editList}
+              deleteList={deleteList}
               getTasksInList={getTasksInList}
             />
           </div>
@@ -232,8 +235,9 @@ function App() {
                   setShowModel={setShowEditListModel}
                   userId={userId}
                   getData={getTasksInList}
-                  listName={currentListName}
-                  currentListContainerId={currentListContainerId}
+                  listName={currentListNameRef.current}
+                  currentListContainerId={currentListContainerIdRef.current}
+                  
                 />
               )}
 
@@ -247,10 +251,20 @@ function App() {
                   setShowModel={setShowCreateListModel}
                   userId={userId}
                   getData={getTasksInList}
-                  listName={currentListName}
-                  currentListContainerId={currentListContainerId}
+                  listName={currentListNameRef.current}
+                  currentListContainerId={currentListContainerIdRef.current}
                 />
               )}
+
+              {showDeleteModel && (
+                <DeleteModel
+                  setShowModel={setShowDeleteModel}
+                  userId={userId}
+                  listId={currentListId}
+                  listName={currentListNameRef.current}
+                />
+              )}
+
             </div>
           )}
         </div>

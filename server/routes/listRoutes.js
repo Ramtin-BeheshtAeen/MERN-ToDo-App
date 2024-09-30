@@ -81,7 +81,9 @@ router.put("/:userId/:listId", async (req, res) => {
     }
 
     // - [ 4 ] Change The connected container if is Provided and Differ from Old one:
-    if (containerId && containerId !== list.container._id.toString()) {
+    if (containerId !== list.container._id.toString()) {
+      console.log("container ID" + containerId)
+      console.log("list_id" + list.container._id.toString())
       //[ 4-1 ]Find New Container:
       const newContainer = await Container.findById(containerId);
       if (!newContainer) {
@@ -99,7 +101,7 @@ router.put("/:userId/:listId", async (req, res) => {
       await newContainer.save();
 
       // - [ 4-4 ] Update the list's container reference:
-      list.container = containerId;
+      list.container = newContainer._id;
     }
 
     //Save Updated List:
@@ -112,7 +114,7 @@ router.put("/:userId/:listId", async (req, res) => {
 
 
 // Route to delete a list and its associated tasks
-router.delete('/lists/:userId/:listId', async (req, res) => {
+router.delete('/:userId/:listId', async (req, res) => {
   const { userId, listId } = req.params;
 
   try {
