@@ -23,10 +23,12 @@ function App() {
   const [containers, setContainers] = useState([]);
   const [showAll, setShowAll] = useState(true);
 
+  //Use This For Fetching the Data Of The List
   const [currentListId, setCurrentListId] = useState("");
+  //Use This For Editing/Deleting The List
 
   const currentListIdRef = useRef(null);
-  const currentListNameRef = useRef('');
+  const currentListNameRef = useRef(null);
   const currentListContainerIdRef = useRef(null);
 
   const [showEditListModel, setShowEditListModel] = useState(false);
@@ -260,7 +262,7 @@ function App() {
                 <DeleteModel
                   setShowModel={setShowDeleteModel}
                   userId={userId}
-                  listId={currentListId}
+                  listId={currentListIdRef.current}
                   listName={currentListNameRef.current}
                 />
               )}

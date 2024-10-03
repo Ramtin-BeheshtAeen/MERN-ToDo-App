@@ -30,12 +30,17 @@ export default function SideBar({
   setCurrentListId,
 }) {
   const listReferenceElements = useRef([]);
+  const containerReferenceElements = useRef([]);
   // const listPopperElements = useRef([]);
 
 
   const setRef = (element, index) => {
     listReferenceElements.current[index] = element;
   };
+
+  const setContainerRef = (element, index) => {
+    containerReferenceElements.current[index] = element;
+  }
 
   const [currentListName, setCurrentListName] = useState()
   const [currentListContainer, setCurrentListContainer] = useState()
@@ -45,14 +50,14 @@ export default function SideBar({
   const [showEditListPopup, setShowEditListPopup] = useState(false);
   const [showEditContainerPopup, setShowEditContainerPopup] = useState(false);
 
-  const [listReferenceElement, setListReferenceElement] = useState();
-  const [listPopperElement, setListPopperElement] = useState();
 
-  const [containerReferenceElement, setContainerReferenceElement] = useState();
+  const [listPopperElement, setListPopperElement] = useState();
   const [containerPopperElement, setContainerPopperElement] = useState();
 
+
   const [currentListIndex, setCurrentListIndex] = useState(null);
-  // listReferenceElements.current[currentListIndex],
+  const [currentContainerIndex, setCurrentContainerIndex] = useState(null);
+
   const { styles, attributes} = usePopper(
     listReferenceElements.current[currentListIndex],
     listPopperElement,
@@ -61,16 +66,27 @@ export default function SideBar({
     }
   );
 
+  const { styles:containerStyles, attributes:containerAttributes} = usePopper(
+    containerReferenceElements.current[currentContainerIndex],
+    containerPopperElement,
+    {
+      placement: "left",
+    }
+  );
+
+
+
   const toggleListEditPopup = (index) => {
     setCurrentListIndex(index);
-    console.log("index:" + index);
     setShowEditListPopup(!showEditListPopup);
   };
 
 
-  const toggleContainerEditPopup = () => {
+  const toggleContainerEditPopup = (index) => {
+    setCurrentContainerIndex(index)
     setShowEditContainerPopup(!showEditContainerPopup);
   };
+
 
   const { collapseSidebar } = useProSidebar();
 
@@ -99,8 +115,8 @@ export default function SideBar({
               <div className="side-nav-container-section">
                 {container.name}
                 <MoreVertIcon
-                  ref={setContainerReferenceElement}
-                  onClick={toggleContainerEditPopup}
+                  ref={(el) => setContainerRef(el, index)}
+                  onClick={() => toggleContainerEditPopup(index)}
                   style={{ marginLeft: "auto", cursor: "pointer" }}
                 />
 
@@ -108,9 +124,9 @@ export default function SideBar({
                   createPortal(
                     <div
                       className="options"
-                      style={styles.popper}
+                      style={containerStyles.popper}
                       ref={setContainerPopperElement}
-                      {...attributes.popper}>
+                      {...containerAttributes.popper}>
                       <div
                         class="option"
                         onClick={() => editContainer(container._id)}>
