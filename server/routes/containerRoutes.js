@@ -63,4 +63,41 @@ router.post('/new-container/:userId', async (req, res) => {
   })
 
 
+//Edit Container Name:
+router.put('/:userId/:containerId', async(req, res) => {
+  const {userId, containerId} = req.params
+  const {containerName} = req.body
+
+  try {
+    
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({message:'user not found'})
+    }
+
+    const container = await Container.findById(containerId)
+    if (!container) {
+      return res.status(404).json({ message: 'Container not found' });
+    }
+
+    if (container.user.toString() !== userId) {
+      return res.status(403).json({ message: 'You do not have permission to edit this container' });
+    }
+
+    container.name = containerName
+    container.updatedAt = Date.now()
+    await container.save()
+
+    res.status(200).json(container)
+
+  }catch(err){
+    console.log(err)
+  }
+})
+
+
+
+//Delete a Container:
+router.delete('/:userId/:containerId')
+
 export default router;

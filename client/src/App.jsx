@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 import ListHeader from "./components/Ui/ListHeader";
 import ListItem from "./components/Ui/ListItem";
 import Auth from "./components/Ui/Auth";
-import GroupModel from "./components/Ui/ContainerModel";
+import ContainerModel from "./components/Ui/ContainerModel";
 import ListModel from "./components/Ui/ListModel";
 import MyTabs from "./components/Ui/Tabs";
 import SideBar from "./components/Ui/SideBar";
@@ -31,12 +31,14 @@ function App() {
   const currentListNameRef = useRef(null);
   const currentListContainerIdRef = useRef(null);
 
+  const currentContainerIdRef = useRef(null);
+  const currentContainerNameRef = useRef(null);
+
   const [showEditListModel, setShowEditListModel] = useState(false);
   const [showCreateListModel, setShowCreateListModel] = useState(false);
 
   const [showDeleteModel, setShowDeleteModel] = useState(false);
-
-  const [showGroupModel, setShowGroupModel] = useState(false);
+  const [showContainerModel, setShowContainerModel] = useState(false);
 
   //////////////////////////////////////////////////////////////////////////////
   ///// Const //////
@@ -86,11 +88,22 @@ function App() {
   }
 
   function deleteList(listId, listName, listContainerId) {
-    console.log("Edit List");
+    console.log("Delete List");
     currentListIdRef.current = listId
     currentListNameRef.current = listName
     currentListContainerIdRef.current = listContainerId;
     setShowDeleteModel(true);
+  }
+
+  function editContainer(containerId, containerCurrentName) {
+    currentContainerIdRef.current=containerId
+    currentContainerNameRef.current=containerCurrentName
+    setShowContainerModel(true)
+    console.log("Edit Container");
+  }
+
+  function deleteContainer(listId, listName, listContainerId) {
+    console.log("Delete Container");
   }
 
   // const [isDarkMode, setIsDarkMode] = useState(false);
@@ -161,9 +174,10 @@ function App() {
               setIsNavbarOpen={setIsNavbarOpen}
               containers={containers}
               setShowCreateListModel={setShowCreateListModel}
-              setShowGroupModel={setShowGroupModel}
+              setShowContainerModel={setShowContainerModel}
               editList={editList}
               deleteList={deleteList}
+              editContainer={editContainer}
               getTasksInList={getTasksInList}
             />
           </div>
@@ -218,13 +232,23 @@ function App() {
               )}
 
               {/* //Create New Container */}
-              {showGroupModel && (
-                <GroupModel
-                  element={"Group"}
+              {showContainerModel && (
+                <ContainerModel
                   mode={"create"}
-                  setShowModel={setShowGroupModel}
+                  currentName={""}
+                  setShowModel={setShowContainerModel}
                   userId={userId}
-                  getData={getTasksInList}
+                />
+              )}
+              
+              {/* //Edit Container */}
+              {showContainerModel && (
+                <ContainerModel
+                  mode={"edit"}
+                  currentName={currentContainerNameRef.current}
+                  containerId={currentContainerIdRef.current}
+                  setShowModel={setShowContainerModel}
+                  userId={userId}
                 />
               )}
 

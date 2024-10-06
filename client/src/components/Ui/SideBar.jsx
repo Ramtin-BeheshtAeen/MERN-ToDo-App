@@ -23,9 +23,10 @@ export default function SideBar({
   isNavbarOpen,
   setIsNavbarOpen,
   setShowCreateListModel,
-  setShowGroupModel,
+  setShowContainerModel,
   editList,
   deleteList,
+  editContainer,
   getTasksInList,
   setCurrentListId,
 }) {
@@ -46,9 +47,11 @@ export default function SideBar({
   const [currentListContainer, setCurrentListContainer] = useState()
   const [currentListIdForPortal, setCurrentListIdForPortal] = useState()
 
+  const [currentContainerName, setCurrentContainerName] = useState()
+  const [currentContainerId, setCurrentContainerId] = useState()
 
   const [showEditListPopup, setShowEditListPopup] = useState(false);
-  const [showEditContainerPopup, setShowEditContainerPopup] = useState(false);
+  const [showEditAndDeleteContainerPopup, setShowEditAndDeleteContainerPopup] = useState(false);
 
 
   const [listPopperElement, setListPopperElement] = useState();
@@ -82,9 +85,9 @@ export default function SideBar({
   };
 
 
-  const toggleContainerEditPopup = (index) => {
+  const toggleContainerEditAndDeletePopup = (index) => {
     setCurrentContainerIndex(index)
-    setShowEditContainerPopup(!showEditContainerPopup);
+    setShowEditAndDeleteContainerPopup(!showEditAndDeleteContainerPopup);
   };
 
 
@@ -116,11 +119,15 @@ export default function SideBar({
                 {container.name}
                 <MoreVertIcon
                   ref={(el) => setContainerRef(el, index)}
-                  onClick={() => toggleContainerEditPopup(index)}
+                  onClick={() => {toggleContainerEditAndDeletePopup(index)
+                  setCurrentContainerId(container._id)
+                  setCurrentContainerName(container.name)
+                  }
+                  }
                   style={{ marginLeft: "auto", cursor: "pointer" }}
                 />
 
-                {showEditContainerPopup &&
+                {showEditAndDeleteContainerPopup &&
                   createPortal(
                     <div
                       className="options"
@@ -129,7 +136,7 @@ export default function SideBar({
                       {...containerAttributes.popper}>
                       <div
                         class="option"
-                        onClick={() => editContainer(container._id)}>
+                        onClick={() => editContainer(currentContainerId, currentContainerName)}>
                         <EditIcon fontSize="lg" />
                         Edit
                       </div>
@@ -212,7 +219,7 @@ export default function SideBar({
           <MenuItem onClick={() => setShowCreateListModel(true)}>
             + New List
           </MenuItem>
-          <MenuItem onClick={() => setShowGroupModel(true)}>New Group</MenuItem>
+          <MenuItem onClick={() => setShowContainerModel(true)}>New Group</MenuItem>
         </div>
         <br></br>
       </Menu>

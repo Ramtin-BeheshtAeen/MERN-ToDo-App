@@ -3,25 +3,26 @@ import DateTimePicker from "../Form/DateTimePicker";
 import RadioButtonGroup from "../Form/RadioButtonGroup";
 import dayjs from "dayjs";
 
-const ContainerModel = ({ element, mode, setShowModel, getData, userId, existingData }) => {
-  const [title, setTitle] = useState("");
-
+const ContainerModel = ({ mode, setShowModel, currentName,containerId, userId }) => {
   const editMode = mode === "edit" ? true : false;
+  const [title, setTitle] = useState(currentName);
 
   const handleTitleChange = (e) => {
-    const {name, value} = e.target
-    setTitle(value)
+    const { name, value } = e.target;
+    setTitle(value);
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const baseData = {
-      containerName:title
+      containerName: title,
     };
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/containers/new-container/${userId}`,
+        `${
+          import.meta.env.VITE_APP_BACKEND_SERVER_URL
+        }/containers/new-container/${userId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -33,7 +34,6 @@ const ContainerModel = ({ element, mode, setShowModel, getData, userId, existing
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 201) {
         setShowModel(false);
-        getData();
       }
     } catch (err) {
       console.log("error in Model \n");
@@ -43,6 +43,31 @@ const ContainerModel = ({ element, mode, setShowModel, getData, userId, existing
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
+    const baseData = {
+      containerName: title,
+    };
+
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_APP_BACKEND_SERVER_URL
+        }/containers/${userId}/${containerId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(baseData),
+        }
+      );
+
+      // Use 200 OK for general success responses.
+      // Use 201 Created when a new resource has been created successfully.
+      if (response.status === 200) {
+        setShowModel(false);
+      }
+    } catch (err) {
+      console.log("error in Container Model \n");
+      console.log(err);
+    }
   };
 
   return (
