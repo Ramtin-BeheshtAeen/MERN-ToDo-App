@@ -17,10 +17,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tasks: [
+  containers: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Task",
+      ref: "Container",
     },
   ],
   date: { type: Date, default: Date.now },

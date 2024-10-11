@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
+    "migrate": "node scripts/migrateData.js",
     "deploy": "node server.js"
   },
   "author": "Ramtin Behehst Aeen",
