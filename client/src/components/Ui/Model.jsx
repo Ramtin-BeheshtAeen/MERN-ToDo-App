@@ -3,7 +3,7 @@ import DateTimePicker from "../Form/DateTimePicker";
 import RadioButtonGroup from "../Form/RadioButtonGroup";
 import dayjs from "dayjs";
 
-const Model = ({mode, setShowModel, getData, userId, existingData}) => {
+const Model = ({mode, currentListId, setShowModel, getData, userId, existingData}) => {
 
   const [title, setTitle] = useState('')
 
@@ -61,6 +61,7 @@ const Model = ({mode, setShowModel, getData, userId, existingData}) => {
     e.preventDefault()
     const baseData = {
         // _id: userId,
+        currentListId: currentListId,
         title: title,
         dueDate: selectedDate.format('YYYY-MM-DD'),
         dueTime: selectedTime.format('HH:mm'),

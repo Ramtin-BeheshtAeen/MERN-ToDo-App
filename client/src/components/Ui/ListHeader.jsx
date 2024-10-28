@@ -32,7 +32,7 @@ function ListHeader(props) {
         {props.isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
       </button>  */}
 
-      <button>{props.listId}</button>
+      <button>{props.currentListId}</button>
 
       </div>
       {showModel && (
@@ -41,6 +41,7 @@ function ListHeader(props) {
           setShowModel={setShowModel}
           userId={props.userId}
           getData={props.getData}
+          currentListId={props.currentListId}
         />
       )}
     </div>

@@ -50,9 +50,10 @@ router.get("/:userId/:listId", async (req, res) => {
 //add new to-do:
 router.post("/:userId", async (req, res) => {
   const { userId } = req.params;
-  const { title, dueDate, dueTime, priority, urgency, status, createdAt } =
+  const { title, currentListId, dueDate, dueTime, priority, urgency, status, createdAt } =
     req.body;
 
+      console.log("current list id:  "+currentListId)
   // console.log( title,
   //   dueDate,
   //   dueTime,
@@ -71,13 +72,18 @@ router.post("/:userId", async (req, res) => {
       status: status,
       createdAt: new Date(createdAt),
       user: userId,
+      list: currentListId
     });
 
     await task.save();
 
-    const user = await User.findById(userId);
-    user.tasks.push(task._id);
-    await user.save();
+    // Update the list to include this task
+    const list = await List.findById(currentListId);
+
+    if (!list) { return res.status(404).send({ message: 'List not found' }); }
+
+    list.tasks.push(task._id);
+    await list.save();
 
     res.status(201).send(task);
   } catch (err) {

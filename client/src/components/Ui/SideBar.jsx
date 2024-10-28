@@ -28,6 +28,7 @@ export default function SideBar({
   deleteList,
   editContainer,
   getTasksInList,
+  currentListId,
   setCurrentListId,
 }) {
   const listReferenceElements = useRef([]);
@@ -97,6 +98,13 @@ export default function SideBar({
     setIsNavbarOpen(!isNavbarOpen);
     collapseSidebar();
   };
+
+  useEffect(() => {
+    if (currentListId) {
+      getTasksInList(currentListId); // Call this whenever currentListId changes
+    }
+  }, [currentListId]);
+  
 
   return (
     <Sidebar style={{ height: "90vh" }}>

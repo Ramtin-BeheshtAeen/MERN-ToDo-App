@@ -170,6 +170,7 @@ function App() {
           <div className="side-bar">
             <SideBar
               setCurrentListId={setCurrentListId}
+              currentListId={currentListId}
               isNavbarOpen={isNavbarOpen}
               setIsNavbarOpen={setIsNavbarOpen}
               containers={containers}
@@ -187,7 +188,7 @@ function App() {
               <ListHeader
                 listName={name + "Tick List"}
                 userId={userId}
-                listId={currentListId}
+                currentListId={currentListId}
                 getData={getTasksInList}
                 // toggleTheme={toggleTheme}
                 // isDarkMode={isDarkMode}
