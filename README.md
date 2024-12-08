@@ -1,6 +1,12 @@
 # About The Project
 
+# Step 1:
+in root dircetory:
+```
+pnpm install
+```
 
+# Step 2:
 ## Build Project Using PNPM
 ### Server Side:
 

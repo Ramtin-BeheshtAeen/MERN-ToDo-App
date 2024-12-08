@@ -10,10 +10,7 @@ import taskRoutes from "./routes/taskRoutes.js";
 import containerRoutes from "./routes/containerRoutes.js";
 import testRoutes from "./routes/testRoutes.js";
 import listRoutes from "./routes/listRoutes.js"
-import dotenv from 'dotenv';
 
-// Load environment variables from .env file
-dotenv.config();
 
 const app = express();
 app.use(cors());

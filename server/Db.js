@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
 import mongoose from "mongoose";
+// Load environment variables from .env file
+dotenv.config();
 
 export default function connectDB() {
   //Ethernet adapter vEthernet (WSL): 172.23.192.1
