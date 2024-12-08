@@ -3,7 +3,7 @@ import DateTimePicker from "../Form/DateTimePicker";
 import RadioButtonGroup from "../Form/RadioButtonGroup";
 import dayjs from "dayjs";
 
-const ContainerModel = ({ mode, setShowModel, currentName,containerId, userId }) => {
+const ContainerModel = ({ mode, setShowModel, currentName, containerId, userId }) => {
   const editMode = mode === "edit" ? true : false;
   const [title, setTitle] = useState(currentName);
 
@@ -34,6 +34,7 @@ const ContainerModel = ({ mode, setShowModel, currentName,containerId, userId })
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 201) {
         setShowModel(false);
+        location.reload();
       }
     } catch (err) {
       console.log("error in Model \n");
@@ -63,6 +64,7 @@ const ContainerModel = ({ mode, setShowModel, currentName,containerId, userId })
       // Use 201 Created when a new resource has been created successfully.
       if (response.status === 200) {
         setShowModel(false);
+        location.reload();
       }
     } catch (err) {
       console.log("error in Container Model \n");

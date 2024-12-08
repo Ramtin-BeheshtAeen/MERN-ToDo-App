@@ -38,7 +38,10 @@ function App() {
   const [showCreateListModel, setShowCreateListModel] = useState(false);
 
   const [showDeleteModel, setShowDeleteModel] = useState(false);
-  const [showContainerModel, setShowContainerModel] = useState(false);
+
+  const [showCreateContainerModel, setShowCreateContainerModel] = useState(false);
+  const [showEditContainerModel, setShowEditContainerModel] = useState(false);
+
 
   //////////////////////////////////////////////////////////////////////////////
   ///// Const //////
@@ -98,7 +101,7 @@ function App() {
   function editContainer(containerId, containerCurrentName) {
     currentContainerIdRef.current=containerId
     currentContainerNameRef.current=containerCurrentName
-    setShowContainerModel(true)
+    setShowEditContainerModel(true)
     console.log("Edit Container");
   }
 
@@ -175,7 +178,7 @@ function App() {
               setIsNavbarOpen={setIsNavbarOpen}
               containers={containers}
               setShowCreateListModel={setShowCreateListModel}
-              setShowContainerModel={setShowContainerModel}
+              setShowCreateContainerModel={setShowCreateContainerModel}
               editList={editList}
               deleteList={deleteList}
               editContainer={editContainer}
@@ -186,7 +189,7 @@ function App() {
           {(!isNavbarOpen || !isMobile) && (
             <div className="tasks-container">
               <ListHeader
-                listName={name + "Tick List"}
+                listName={name + " Tick List"}
                 userId={userId}
                 currentListId={currentListId}
                 getData={getTasksInList}
@@ -233,22 +236,22 @@ function App() {
               )}
 
               {/* //Create New Container */}
-              {showContainerModel && (
+              {showCreateContainerModel && (
                 <ContainerModel
                   mode={"create"}
                   currentName={""}
-                  setShowModel={setShowContainerModel}
+                  setShowModel={setShowCreateContainerModel}
                   userId={userId}
                 />
               )}
               
               {/* //Edit Container */}
-              {showContainerModel && (
+              {showEditContainerModel && (
                 <ContainerModel
                   mode={"edit"}
                   currentName={currentContainerNameRef.current}
                   containerId={currentContainerIdRef.current}
-                  setShowModel={setShowContainerModel}
+                  setShowModel={setShowEditContainerModel}
                   userId={userId}
                 />
               )}

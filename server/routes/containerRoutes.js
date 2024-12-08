@@ -32,6 +32,8 @@ router.get('/:userId', async (req, res) => {
 router.post('/new-container/:userId', async (req, res) => {
     const {userId} = req.params
     const {containerName} = req.body
+
+    console.log("userId " + userId + " containerName " + containerName )
   
     try {
       //Find User

@@ -23,7 +23,7 @@ export default function SideBar({
   isNavbarOpen,
   setIsNavbarOpen,
   setShowCreateListModel,
-  setShowContainerModel,
+  setShowCreateContainerModel,
   editList,
   deleteList,
   editContainer,
@@ -227,7 +227,7 @@ export default function SideBar({
           <MenuItem onClick={() => setShowCreateListModel(true)}>
             + New List
           </MenuItem>
-          <MenuItem onClick={() => setShowContainerModel(true)}>New Group</MenuItem>
+          <MenuItem onClick={() => setShowCreateContainerModel(true)}>New Group</MenuItem>
         </div>
         <br></br>
       </Menu>
