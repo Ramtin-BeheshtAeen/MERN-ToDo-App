@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import {useCookies} from 'react-cookie'
+import { useCookies } from 'react-cookie'
 
 const Auth = () => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
@@ -19,6 +19,15 @@ const Auth = () => {
     setError(null);
     setIsLogIn(status);
   };
+
+
+  const handleDemoSubmit = async (e) => {
+    e.preventDefault()
+    setPassword("1234")
+    setEmail("demo@test.com")
+    handleSubmit(e, isLogIn ? "login" : "signup")
+  }
+
 
   const handleSubmit = async (e, endpoint) => {
     e.preventDefault();
@@ -49,7 +58,7 @@ const Auth = () => {
         setCookie('LastName', data.lastName)
         window.location.reload()
       }
-       else {
+      else {
         console.log("An error occurred: ", error);
       }
 
@@ -64,7 +73,7 @@ const Auth = () => {
         setCookie('LastName', data.lastName)
         window.location.reload()
       }
-       else {
+      else {
         console.log("An error occurred: ", error);
       }
     }
@@ -114,8 +123,13 @@ const Auth = () => {
           <input
             type="submit"
             className="create"
-            onClick={ (e) => handleSubmit(e, isLogIn ? "login" : "signup")}
+            onClick={(e) => handleSubmit(e, isLogIn ? "login" : "signup")}
           />
+
+          <button onClick={(e) => handleDemoSubmit(e)} style={styles.button}>
+            Demo Login
+          </button>
+
           {error && <p>{error}</p>}
         </form>
 
@@ -144,5 +158,18 @@ const Auth = () => {
     </div>
   );
 };
+
+const styles = {
+  button: {
+    padding: '10px',
+    fontSize: '16px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '10px',
+    cursor: 'pointer',
+  },
+};
+
 
 export default Auth;
