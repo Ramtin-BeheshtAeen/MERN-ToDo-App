@@ -22,11 +22,35 @@ const Auth = () => {
 
 
   const handleDemoSubmit = async (e) => {
-    e.preventDefault()
-    setPassword("1234")
-    setEmail("demo@test.com")
-    handleSubmit(e, isLogIn ? "login" : "signup")
-  }
+    e.preventDefault();
+    
+    // Set the demo credentials
+    const demoEmail = 'demo@test.com';
+    const demoPassword = "1234";
+    const endPoint = "login"
+    console.log( JSON.stringify({ email : demoEmail, password: demoPassword }))
+    // Call handleSubmit with demo credentials directly
+    const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/auth/${endPoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email : demoEmail, password: demoPassword })
+    });
+    const data = await response.json();
+    console.log(data)
+    if (data.message) {
+      setError(data.message);
+    } else if (data.email) {
+      setCookie('Email', data.email)
+      setCookie('AuthToken', data.token)
+      setCookie('UserId', data._id)
+      setCookie('Name', data.name)
+      setCookie('LastName', data.lastName)
+      window.location.reload()
+    }
+    else {
+      console.log("An error occurred: ", error);
+    }
+  };
 
 
   const handleSubmit = async (e, endpoint) => {
@@ -35,7 +59,6 @@ const Auth = () => {
       setError("Make Sure That Passwords Match!");
       return;
     }
-    console.log(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/${endpoint}`)
     const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/auth/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
