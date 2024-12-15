@@ -106,7 +106,7 @@ const Auth = () => {
   return (
     <div className="auth-container">
       <div className="auth-container-box">
-        <form style={{ height: !isLogIn ? "500px" : "300px" }}>
+        <form style={{ height: !isLogIn ? "500px" : "350px" }}>
           <h2>{isLogIn ? "Please Login" : "Please Sign up"}</h2>
           {!isLogIn && (
             <>
