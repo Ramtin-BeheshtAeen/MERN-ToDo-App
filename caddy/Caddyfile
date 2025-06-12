@@ -1,0 +1,8 @@
+http://5.75.137.255 {
+  encode gzip
+  reverse_proxy client:80
+}
+
+http://api.5.75.137.255 {
+  reverse_proxy api:4004
+}
