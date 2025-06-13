@@ -13,8 +13,9 @@ RUN npm install
 # This is useful for development, but in production you might want to copy only necessary files
 # If you want to copy only specific files, you can use a .dockerignore file to exclude unnecessary files
 COPY . .
-
-RUN VITE_APP_BACKEND_SERVER_URL=mern-todo-app-api.ramtinba.de npm run build 
+ARG VITE_APP_BACKEND_SERVER_URL
+ENV VITE_APP_BACKEND_SERVER_URL=$VITE_APP_BACKEND_SERVER_URL
+RUN npm run build 
 
 FROM caddy:2-alpine AS production
 # Copy the built application from the development stage
