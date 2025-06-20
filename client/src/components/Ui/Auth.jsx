@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import {useCookies} from 'react-cookie'
+import { useCookies } from 'react-cookie'
 
 const Auth = () => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
@@ -20,13 +20,45 @@ const Auth = () => {
     setIsLogIn(status);
   };
 
+
+  const handleDemoSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Set the demo credentials
+    const demoEmail = 'demo@test.com';
+    const demoPassword = "1234";
+    const endPoint = "login"
+    console.log( JSON.stringify({ email : demoEmail, password: demoPassword }))
+    // Call handleSubmit with demo credentials directly
+    const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/auth/${endPoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email : demoEmail, password: demoPassword })
+    });
+    const data = await response.json();
+    console.log(data)
+    if (data.message) {
+      setError(data.message);
+    } else if (data.email) {
+      setCookie('Email', data.email)
+      setCookie('AuthToken', data.token)
+      setCookie('UserId', data._id)
+      setCookie('Name', data.name)
+      setCookie('LastName', data.lastName)
+      window.location.reload()
+    }
+    else {
+      console.log("An error occurred: ", error);
+    }
+  };
+
+
   const handleSubmit = async (e, endpoint) => {
     e.preventDefault();
     if (!isLogIn && password !== confirmPassword) {
       setError("Make Sure That Passwords Match!");
       return;
     }
-    console.log(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/${endpoint}`)
     const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER_URL}/auth/${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,7 +81,7 @@ const Auth = () => {
         setCookie('LastName', data.lastName)
         window.location.reload()
       }
-       else {
+      else {
         console.log("An error occurred: ", error);
       }
 
@@ -64,7 +96,7 @@ const Auth = () => {
         setCookie('LastName', data.lastName)
         window.location.reload()
       }
-       else {
+      else {
         console.log("An error occurred: ", error);
       }
     }
@@ -74,7 +106,7 @@ const Auth = () => {
   return (
     <div className="auth-container">
       <div className="auth-container-box">
-        <form style={{ height: !isLogIn ? "500px" : "300px" }}>
+        <form style={{ height: !isLogIn ? "500px" : "350px" }}>
           <h2>{isLogIn ? "Please Login" : "Please Sign up"}</h2>
           {!isLogIn && (
             <>
@@ -114,8 +146,13 @@ const Auth = () => {
           <input
             type="submit"
             className="create"
-            onClick={ (e) => handleSubmit(e, isLogIn ? "login" : "signup")}
+            onClick={(e) => handleSubmit(e, isLogIn ? "login" : "signup")}
           />
+
+          <button onClick={(e) => handleDemoSubmit(e)} style={styles.button}>
+            Demo Login
+          </button>
+
           {error && <p>{error}</p>}
         </form>
 
@@ -144,5 +181,18 @@ const Auth = () => {
     </div>
   );
 };
+
+const styles = {
+  button: {
+    padding: '10px',
+    fontSize: '16px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '10px',
+    cursor: 'pointer',
+  },
+};
+
 
 export default Auth;

@@ -49,7 +49,12 @@ function App() {
   const userId = cookies.UserId;
   const authToken = cookies.AuthToken;
   const name = cookies.Name;
-
+  //////////////////////////////////////////////////////////////////////////////
+  ///// Style //////
+  //////////////////////////////////////////////////////////////////////////////
+  const outerDivStyle = {
+    marginRight: authToken ? '' : '10%'
+  };
   //////////////////////////////////////////////////////////////////////////////
   ///// Functions //////
   //////////////////////////////////////////////////////////////////////////////
@@ -159,7 +164,7 @@ function App() {
   console.log("containers:", containers);
 
   return (
-    <div>
+    <div className='main-dev' style={outerDivStyle} >
       {!authToken && (
         <div className="auth-outer-container">
           <Auth />

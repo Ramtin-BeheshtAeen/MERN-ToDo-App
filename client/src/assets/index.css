@@ -13,6 +13,10 @@ body {
   width: 100vw;
 }
 
+.main-dev{
+  margin-right: 10%;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   #root {
@@ -21,6 +25,10 @@ body {
   .list-header {
     font-size: 7px;
   }
+  .main-dev{
+    margin: 1px;
+  }
+
 }
 
 .auth-outer-container {
