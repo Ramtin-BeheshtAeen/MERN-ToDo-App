@@ -15,16 +15,11 @@ services:
       context: ./client
       target: production
       args:
-        - VITE_APP_BACKEND_SERVER_URL= http://api.${DOMAIN_NAME}
+        - VITE_APP_BACKEND_SERVER_URL=https://mern-todo-app-api.ramtinba.de 
     restart: unless-stopped 
     env_file: ./client/.env
-    # volumes:
-    #   - ./client:/app #mount client code to app container
-    #   - /app/node_modules #ignore node_modules in container
     networks:
       - mern-app
-    # ports:
-    #   - 3000:3000
     depends_on:
       - api
 
@@ -36,7 +31,7 @@ services:
         - 80:80
         - 443:443
     environment:
-         DOMAIN_NAME: ${DOMAIN_NAME}
+         DOMAIN_NAME: https://mern-todo-app-api.ramtinba.de
     volumes:
         - caddy_data:/data
         - caddy_config:/config

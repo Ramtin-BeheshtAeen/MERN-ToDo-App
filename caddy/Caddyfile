@@ -1,8 +1,16 @@
-http://5.75.137.255 {
+mern-todo-app.ramtinba.de {
   encode gzip
   reverse_proxy client:80
 }
 
-http://api.5.75.137.255 {
+mern-todo-app-api.ramtinba.de {
   reverse_proxy api:4004
+}
+
+http://mern-todo-app.ramtinba.de {
+  redir https://mern-todo-app.ramtinba.de{uri} 301
+}
+
+http://mern-todo-app-api.ramtinba.de {
+  redir https://mern-todo-app-api.ramtinba.de{uri} 301
 }
